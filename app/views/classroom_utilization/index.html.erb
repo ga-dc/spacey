@@ -1,0 +1,14 @@
+
+<table>
+  <tr>
+    <th>Time</th>
+    <% @spaces.each do |space| %>
+      <th><%= space.title %></th>
+    <% end %>
+  </tr>
+  <% @events.each do |event| %>
+    <tr>
+      <td><%= event.start.strftime("%Y-%m-%d") %></td>
+    </tr>
+  <% end %>
+</table>
