@@ -24,6 +24,14 @@ e = Event.create(
   title: "wdi8",
   space: spaces[0],
   recurring_event: recurring_events[0],
-  start: Time.now,
+  start: Time.now - 20.days,
   end: Time.now
+)
+
+e = Event.create(
+  title: "wdi9",
+  space: spaces[1],
+  recurring_event: recurring_events[0],
+  start: Time.now + 20.days,
+  end: Time.now + 90.days
 )
