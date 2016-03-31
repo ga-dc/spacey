@@ -1,0 +1,47 @@
+<h3>New Event</h3>
+<%= form_for @event do |f| %>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+  <br>
+  <%= f.label :space %>
+  <%= f.select :space, Space.all.map{|s| s.title } %>
+  <br>
+  <%= f.label :start_date %>
+  <%= f.date_field :start_date %>
+  <%= f.time_field :start_time %>
+  <br>
+  <%= f.label :end_date %>
+  <%= f.date_field :end_date %>
+  <%= f.time_field :end_time %>
+
+  <br>
+  <%= f.label :repeat %>
+  <%= check_box_tag :repeat %>
+  <div class='toggle-by-prev'>
+  <%= f.label :monday %>
+  <%= check_box_tag :monday %>
+  <br>
+  <%= f.label :tuesday %>
+  <%= check_box_tag :tuesday %>
+  <br>
+  <%= f.label :wednesday %>
+  <%= check_box_tag :wednesday %>
+  <br>
+  <%= f.label :thursday %>
+  <%= check_box_tag :thursday %>
+  <br>
+  <%= f.label :friday %>
+  <%= check_box_tag :friday %>
+  <br>
+  <%= f.label :saturday %>
+  <%= check_box_tag :saturday %>
+  <br>
+  <%= f.label :sunday %>
+  <%= check_box_tag :sunday %>
+  <br>
+  <%= f.label :until %>
+  <%= date_field_tag :until %>
+  </div>
+  <br>
+  <%= f.submit %>
+<% end %>

@@ -20,8 +20,10 @@ ActiveRecord::Schema.define(version: 20160115170904) do
 
   create_table "events", force: :cascade do |t|
     t.string   "title"
-    t.datetime "start"
-    t.datetime "end"
+    t.datetime "start_date"
+    t.datetime "start_time"
+    t.datetime "end_date"
+    t.datetime "end_time"
     t.integer  "recurring_event_id"
     t.integer  "space_id"
   end

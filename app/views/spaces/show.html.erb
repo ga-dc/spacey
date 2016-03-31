@@ -1,0 +1,7 @@
+<h2><%= @space.title %></h2>
+
+<h3>Events</h3>
+
+<% @space.events.each do |e| %>
+  <%= e.inspect %>
+<% end %>
