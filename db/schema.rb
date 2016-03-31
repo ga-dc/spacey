@@ -21,22 +21,11 @@ ActiveRecord::Schema.define(version: 20160115170904) do
   create_table "events", force: :cascade do |t|
     t.string   "title"
     t.datetime "start_date"
-    t.datetime "start_time"
     t.datetime "end_date"
-    t.datetime "end_time"
-    t.integer  "recurring_event_id"
     t.integer  "space_id"
   end
 
-  add_index "events", ["recurring_event_id"], name: "index_events_on_recurring_event_id"
   add_index "events", ["space_id"], name: "index_events_on_space_id"
-
-  create_table "recurring_events", force: :cascade do |t|
-    t.string  "title"
-    t.integer "event_type_id"
-  end
-
-  add_index "recurring_events", ["event_type_id"], name: "index_recurring_events_on_event_type_id"
 
   create_table "spaces", force: :cascade do |t|
     t.string  "title"
