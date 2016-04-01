@@ -26,3 +26,4 @@ table, tr, td, th{
 :checked + .toggle-by-prev{
   display:block;
 }
+

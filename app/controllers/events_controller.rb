@@ -8,4 +8,9 @@ class EventsController < ApplicationController
   def create
     render json: params
   end
+  def show_date
+    day = params[:date]
+    @yesterday = (Date.parse(day) - 1.day).strftime("%F")
+    @events = Event.by_date day
+  end
 end

@@ -9,4 +9,7 @@ class Event < ActiveRecord::Base
       current_day += 1
     end
   end
+  def self.by_date day
+    all.select{|e| e.start_date.strftime("%F") == day }
+  end
 end

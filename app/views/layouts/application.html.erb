@@ -12,6 +12,7 @@
 <nav>
   <%= link_to "Spaces", spaces_path %>
   <%= link_to "Events", events_path %>
+  <%= link_to "Today", "/days/" + Time.now.strftime("%F") %>
 </nav>
 <br>
 
