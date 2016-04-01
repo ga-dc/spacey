@@ -12,5 +12,29 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require_tree .
+
+$(function(){
+  var $createEventButton = $('.js-is-not-available')
+  $(".datetimepicker").datetimepicker();
+  $createEventButton.hide();
+  $(".js-check-availability").on("click", function(e){
+    e.preventDefault();
+    var spaceId = $("[name='event[space_id]']").val()
+    var start_date = $("[name='event[start_date]']").val()
+    var end_date = $("[name='event[end_date]']").val()
+    console.log(spaceId, start_date, end_date)
+    var url = "/events/check_availability?space_id=" + spaceId + "&start_date=" + start_date + "&end_date=" + end_date; 
+    $(this).addClass('loading')
+    $.getJSON(url, function(response){
+      console.log(response)
+      if(response === true){
+	$createEventButton.show();
+      } else {
+	$createEventButton.hide();
+      }
+    })
+  })
+})
+
+

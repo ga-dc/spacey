@@ -1,0 +1,6 @@
+<h2><%= @event.title %></h2>
+<%= @event.space.title %>
+<%= @event.start_date.strftime("%F %H:%m") %> -
+<%= @event.end_date.strftime("%F %H:%m") %>
+
+<%= link_to "Delete", event_path(@event), method: :delete %>

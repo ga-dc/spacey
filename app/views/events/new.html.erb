@@ -3,42 +3,23 @@
   <%= f.label :title %>
   <%= f.text_field :title %>
   <br>
-  <%= f.label :space %>
-  <%= f.select :space, Space.all.map{|s| s.title } %>
+  <%= f.label :space_id %>
+  <%= f.select :space_id, Space.all.collect{|s| [s.title, s.id] } %>
+  <br>
+  <%= f.label :kind %>
+  <% kinds = ["Immersive", "Part Time Course", "Info Session", "C&W", "Event", "Alumni", "Internal"]%>
+  <%= f.select :kind, kinds.collect{|k| [k, k.gsub(/[^A-Za-z]/,'-').downcase] } %>
   <br>
   <%= f.label :start_date %>
-  <%= f.date_field :start_date %>
-  <%= f.time_field :start_time %>
+  <input class='datetimepicker' name='event[start_date]'>
   <br>
   <%= f.label :end_date %>
-  <%= f.date_field :end_date %>
-  <%= f.time_field :end_time %>
+  <input class='datetimepicker' name='event[end_date]'>
 
   <br>
-  <%= f.label :repeat %>
-  <%= check_box_tag :repeat %>
-  <div class='toggle-by-prev'>
-  <%= f.label :monday %>
-  <%= check_box_tag :monday %>
+  <a href='#' class='js-check-availability'>Check Availability</a>
   <br>
-  <%= f.label :tuesday %>
-  <%= check_box_tag :tuesday %>
-  <br>
-  <%= f.label :wednesday %>
-  <%= check_box_tag :wednesday %>
-  <br>
-  <%= f.label :thursday %>
-  <%= check_box_tag :thursday %>
-  <br>
-  <%= f.label :friday %>
-  <%= check_box_tag :friday %>
-  <br>
-  <%= f.label :saturday %>
-  <%= check_box_tag :saturday %>
-  <br>
-  <%= f.label :sunday %>
-  <%= check_box_tag :sunday %>
+  <div class='js-is-not-available'>
+    <%= f.submit%>
   </div>
-  <br>
-  <%= f.submit %>
 <% end %>

@@ -1,4 +1,6 @@
 <%= link_to "&laquo; Yesterday".html_safe, "/days/" + @yesterday %>
+&nbsp;<%= @today %>&nbsp;
+<%= link_to "Tomorrow &raquo;".html_safe, "/days/" + @tomorrow %>
 <br>
 <style>
   .wrap{
@@ -112,8 +114,16 @@
     return scaleX(hs + 8) +"%"
   })
   .attr("height", "70px")
-  .attr("fill", "blue")
+  .attr("class", function(d){
+    return d.kind
+  })
   .attr("x", offsetX)
+  .attr("href", function(d){
+    return "/events/" + d.id
+  })
+  .on("click", function( ){
+    window.location = this.getAttribute("href")
+  })
 
   square
   .append("text")
@@ -126,7 +136,8 @@
   })
   .attr("width","100%")
   .attr("height","100%")
-  .attr("dy", "1em")
+  .attr("dy", "1.25em")
+  .attr("dx", ".25em")
   .attr("fill", "#fff")
   .style("font-size", "10px")
   .text(function(d){
