@@ -18,6 +18,7 @@
 <script src='http://momentjs.com/downloads/moment.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js'></script>
 <script>
+  var spaces = <%= @spaces.to_json.html_safe %>;
   var data = <%= @events.to_json.html_safe %>;
   var scaleX = d3.scale.linear().domain([8,22]).range([0,100])
   var offsetX = function(d){
@@ -53,33 +54,33 @@
   .append("g")
   .attr("class","Y Axis")
   .selectAll("text")
-  .data([1,2,3,4,5])
+  .data(spaces)
   .enter()
   .append("text")
   .attr("dx", "-60")
-  .attr("y", function(d){
-    return (d * 100) - 40;
+  .attr("y", function(d, i){
+    return (i * 70) + 40;
   })
   .attr("dy","-1em")
   .attr("fill", "#000")
   .style("font-size", "10px")
   .text(function(d){
-    return "Classroom " + d
+    return d.title
   })
 
   // y lines
   svg.append("g")
   .selectAll("line")
-  .data([1,2,3,4,5])
+  .data(spaces)
   .enter()
   .append("line")
   .attr("x1", 0)
-  .attr("y1", function(d){
-    return (d * 100);
+  .attr("y1", function(d, i){
+    return (i * 70);
   })
   .attr("x2", "100%")
-  .attr("y2", function(d){
-    return (d * 100);
+  .attr("y2", function(d, i){
+    return (i * 70);
   })
   .attr("stroke", "#eee")
   .attr("stroke-width", "1")
@@ -96,7 +97,12 @@
   .text(function(d){
     return d.id
   })
-  .attr("y", 0)
+  .attr("y", function(d, i){
+    var spaceIds = spaces.map(function(d){
+      return d.id
+    })
+    return spaceIds.indexOf(d.space_id) * 70
+  })
   .attr("width", function(d){
     var now  = d.start_date;
     var then = d.end_date;
@@ -105,14 +111,19 @@
     var hs = du.asHours()
     return scaleX(hs + 8) +"%"
   })
-  .attr("height", "100px")
+  .attr("height", "70px")
   .attr("fill", "blue")
   .attr("x", offsetX)
 
   square
   .append("text")
   .attr("x",offsetX)
-  .attr("y",0)
+  .attr("y", function(d, i){
+    var spaceIds = spaces.map(function(d){
+      return d.id
+    })
+    return spaceIds.indexOf(d.space_id) * 70
+  })
   .attr("width","100%")
   .attr("height","100%")
   .attr("dy", "1em")

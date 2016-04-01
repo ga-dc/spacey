@@ -11,6 +11,7 @@ class EventsController < ApplicationController
   def show_date
     day = params[:date]
     @yesterday = (Date.parse(day) - 1.day).strftime("%F")
+    @spaces = Space.all
     @events = Event.by_date day
   end
 end

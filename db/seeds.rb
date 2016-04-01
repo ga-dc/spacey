@@ -23,3 +23,10 @@ e = Event.create(
   end_date: DateTime.now + 1.hour,
 )
 
+e = Event.create(
+  title: "NASA 2",
+  space: spaces[1],
+  start_date: DateTime.now,
+  end_date: DateTime.now + 1.hour,
+)
+
