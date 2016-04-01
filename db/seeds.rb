@@ -30,3 +30,20 @@ e = Event.create(
   end_date: DateTime.now + 1.hour,
 )
 
+e = Event.create(
+  title: "WDI",
+  space: spaces[2],
+  producer: "Brian Martinowich",
+  instructor: "Jesse Shawl",
+  start_date: DateTime.now.change({hour: 5, minute: 0}),
+  end_date: DateTime.now.change({hour: 13, minute:0})
+)
+
+e = Event.create(
+  title: "UXDI8 Orientation",
+  space: spaces[1],
+  producer: "Alfonso Bravo",
+  instructor: "Jesse Shawl",
+  start_date: DateTime.now.change({hour: 10, minute: 0}),
+  end_date: DateTime.now.change({hour: 11, minute:0})
+)
