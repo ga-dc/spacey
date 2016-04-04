@@ -23,7 +23,7 @@ class Event < ActiveRecord::Base
     endd = self.end_date
     @events = Event.where('space_id = ?', self.space_id).where('(start_date <= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)', start, start, endd, endd)
     if @events.count > 0
-      errors.add(:event, "This space is not available during the date/time you requested." )
+      errors.add(:event, "space and time are not available during the date/time you requested." )
     end
   end
 

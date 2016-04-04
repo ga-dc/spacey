@@ -57,3 +57,12 @@ nav a {
   font-family:'Helvetica';
   font-weight:bold;
 }
+
+.error{
+  border: 2px solid red;
+  background: pink;
+  color:#330000;
+  padding:.5em 1em;
+  border-radius: 3px;
+  margin-bottom:1em;
+}

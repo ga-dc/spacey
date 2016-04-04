@@ -1,4 +1,11 @@
 <h3>New Event</h3>
+<% if @event.errors.any? %>
+  <% @event.errors.full_messages.each do |err| %>
+    <div class='error'>
+      <%= err %>
+    </div>
+  <% end %>
+<% end %>
 <%= form_for @event do |f| %>
   <%= f.label :title %>
   <%= f.text_field :title, required: true, value: "Testing 1.2.3" %>

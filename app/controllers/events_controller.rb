@@ -8,8 +8,12 @@ class EventsController < ApplicationController
   def create
     start_date = DateTime.parse(params[:event][:start_date])
     end_date = DateTime.parse(params[:event][:end_date])
-    Event.create(event_params.merge(start_date: start_date, end_date: end_date))
-    redirect_to "/days/" + Time.now.strftime("%F")
+    @event = Event.new(event_params.merge(start_date: start_date, end_date: end_date))
+    if @event.save
+      redirect_to "/days/" + @event.start_date.strftime("%F")
+    else
+      render "new"
+    end
   end
   def show
     @event = Event.find(params[:id])
