@@ -1,7 +1,7 @@
 <h3>New Event</h3>
 <%= form_for @event do |f| %>
   <%= f.label :title %>
-  <%= f.text_field :title %>
+  <%= f.text_field :title, required: true %>
   <br>
   <%= f.label :space_id %>
   <%= f.select :space_id, Space.all.collect{|s| [s.title, s.id] } %>
@@ -11,15 +11,10 @@
   <%= f.select :kind, kinds.collect{|k| [k, k.gsub(/[^A-Za-z]/,'-').downcase] } %>
   <br>
   <%= f.label :start_date %>
-  <input class='datetimepicker' name='event[start_date]'>
+  <input class='datetimepicker' name='event[start_date]' required="true">
   <br>
   <%= f.label :end_date %>
-  <input class='datetimepicker' name='event[end_date]'>
-
+  <input class='datetimepicker' name='event[end_date]' required="true">
   <br>
-  <a href='#' class='js-check-availability'>Check Availability</a>
-  <br>
-  <div class='js-is-not-available'>
-    <%= f.submit%>
-  </div>
+  <%= f.submit :"Check Availability", class: "js-submit-event" %>
 <% end %>
