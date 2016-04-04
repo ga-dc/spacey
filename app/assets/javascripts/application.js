@@ -35,6 +35,18 @@ $(function(){
       }
     })
   })
+
+  $("input[type='color']").on("change", function(e){
+    console.log($(e.target).val()) 
+    $color = $(e.target)
+    var id = $color.attr('id')
+    var color = $color.val()
+    $.ajax({
+      method:'patch',
+      url:'/event_types/' + id,
+      data: { color: color }
+    })
+  })
 })
 
 

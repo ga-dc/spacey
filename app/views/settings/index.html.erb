@@ -1,0 +1,10 @@
+<h2>Settings</h2>
+
+<h3>Event Types</h3>
+<% @event_types.each do |et| %>
+  <label>
+    <input type='color' value='<%= et.color %>' id='<%= et.id %>'>
+    <%= et.title %>
+  </label>
+  <br>
+<% end %>

@@ -114,8 +114,8 @@
     return scaleX(hs + 8) +"%"
   })
   .attr("height", "70px")
-  .attr("class", function(d){
-    return d.kind
+  .style("fill", function(d){
+    return d.color
   })
   .attr("x", offsetX)
   .attr("href", function(d){

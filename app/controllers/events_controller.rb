@@ -20,12 +20,12 @@ class EventsController < ApplicationController
     redirect_to "/days/" + Time.now.strftime("%F")
   end
   def show_date
-    day = params[:date]
+    day = params[:date] || Date.today.to_s
     @today = Date.parse(day).strftime("%A, %b %e, %Y")
     @yesterday = (Date.parse(day) - 1.day).strftime("%F")
     @tomorrow = (Date.parse(day) + 1.day).strftime("%F")
     @spaces = Space.all
-    @events = Event.by_date day
+    @events = Event.by_date(day)
   end
   def check_availability
     start = DateTime.parse(params[:start_date])

@@ -27,3 +27,25 @@ table, tr, td, th{
   display:block;
 }
 
+body{
+  max-width:40em;
+  margin:auto;
+}
+
+h1, h2, h3, h4,
+nav{
+  font-family: 'Helvetica';
+}
+
+h1 a,
+nav a{
+  text-decoration:none;
+  color:inherit;
+}
+
+nav a {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: .5em;
+}
+

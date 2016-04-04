@@ -1,22 +1,18 @@
 require "rails_helper"
 
 RSpec.describe "Event" do
-  @space = Space.last
-  let(:e){
-    Event.create!(
-      title: "wdi8",
-      space: @space,
-      start_time: Time.now - 20.days,
-      start_date: Time.now - 20.days,
-      end_time: Time.now,
-      end_date: Time.now,
-    )
-  }
 
-  describe "creating reservations" do
-    it "should create at least one reservation" do
-      e.repeat(["Monday", "Tuesday"])
-      expect(e.reservations.count > 1).to eq(true)
-    end
-  end
+ it "has an event type" do
+   et = EventType.create(title:"any")
+   @e = Event.create
+   @e.event_type = et
+   @e.save
+   expect(@e.event_type.title).to eq("any")
+ end
+
+ it "'s event type has a color" do
+   et = EventType.create(title:"any", color: "#bada55")
+   expect(et.color).to eq("#bada55")
+ end
+
 end
