@@ -1,6 +1,7 @@
 class Event < ActiveRecord::Base
   belongs_to :space
   belongs_to :event_type
+  validate :is_available
   has_many :reservations
   def repeat days
     days = self.end_date - self.start_date
@@ -16,6 +17,14 @@ class Event < ActiveRecord::Base
       h = super(options)
       h[:color]   =  self.event_type && self.event_type.color || "#000"
       h
+  end
+  def is_available
+    start = self.start_date
+    endd = self.end_date
+    @events = Event.where('space_id = ?', self.space_id).where('(start_date <= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)', start, start, endd, endd)
+    if @events.count > 0
+      errors.add(:event, "This space is not available during the date/time you requested." )
+    end
   end
 
 end
