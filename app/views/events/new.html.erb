@@ -13,9 +13,9 @@
   <%= f.label :space_id %>
   <%= f.select :space_id, Space.all.collect{|s| [s.title, s.id] } %>
   <br>
-  <%= f.label :kind %>
+  <%= f.label :event_type_id %>
   <% kinds = ["Immersive", "Part Time Course", "Info Session", "C&W", "Event", "Alumni", "Internal"]%>
-  <%= f.select :kind, kinds.collect{|k| [k, k.gsub(/[^A-Za-z]/,'-').downcase] } %>
+  <%= f.select :event_type_id, EventType.all.collect{|et| [et.title, et.id] } %>
   <br>
   <%= f.label :start_date %>
   <input class='datetimepicker' name='event[start_date]' required="true" value="2016/04/05 15:00">
