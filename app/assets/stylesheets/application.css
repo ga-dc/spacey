@@ -49,3 +49,6 @@ nav a {
   padding: .5em;
 }
 
+.events rect{
+  cursor: pointer;
+}
