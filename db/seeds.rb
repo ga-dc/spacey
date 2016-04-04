@@ -12,13 +12,13 @@ spaces = Space.create([
 ])
 
 types = EventType.create([
- { title:"Immersive",color: "#bada55"},
- { title:"Part Time Course", color:"#c0ffee"},
- { title:"Info Session", color:"#fcefce"},
- { title:"C&W", color:"#dadcab"},
- { title:"Event", color:"#feede2"},
- { title:"Alumni", color:"#faaded"},
- { title:"Internal", color:"#abcabc"}
+ { title:"Immersive",color: "#8e44ad"},
+ { title:"Part Time Course", color:"#c0392b"},
+ { title:"Info Session", color:"#d35400"},
+ { title:"C&W", color:"#7f8c8d"},
+ { title:"Event", color:"#16a085"},
+ { title:"Alumni", color:"#2c3e50"},
+ { title:"Internal", color:"#27ae60"}
 ])
 
 
