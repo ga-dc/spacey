@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160404000501) do
+ActiveRecord::Schema.define(version: 20160406200926) do
 
   create_table "event_types", force: :cascade do |t|
     t.string "color"
@@ -30,6 +30,15 @@ ActiveRecord::Schema.define(version: 20160404000501) do
   end
 
   add_index "events", ["space_id"], name: "index_events_on_space_id"
+
+  create_table "notes", force: :cascade do |t|
+    t.text     "text"
+    t.integer  "event_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "notes", ["event_id"], name: "index_notes_on_event_id"
 
   create_table "spaces", force: :cascade do |t|
     t.string  "title"

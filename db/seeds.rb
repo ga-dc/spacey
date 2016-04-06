@@ -57,3 +57,6 @@ events = Event.create!([
   event_type: types[1]
 }
 ])
+
+events[0].notes.create({text: "This is an example note"})
+events[0].notes.create({text: "This is another example note"})

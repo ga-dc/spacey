@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     resources :events
   end
   resources :event_types
-  resources :events
+  resources :events do
+    resources :notes
+  end
   get 'settings', to: 'settings#index'
 end
