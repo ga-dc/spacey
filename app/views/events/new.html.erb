@@ -23,5 +23,8 @@
   <%= f.label :end_date %>
   <input class='datetimepicker' name='event[end_date]' required="true" value="2016/04/05 16:00">
   <br>
+  <%= f.label :producer %>
+  <%= f.text_field :producer %>
+  <br>
   <%= f.submit :"Check Availability", class: "js-submit-event" %>
 <% end %>

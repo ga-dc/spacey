@@ -43,6 +43,6 @@ class EventsController < ApplicationController
   end
   private
   def event_params
-    params.require(:event).permit(:title, :space_id, :event_type_id)
+    params.require(:event).permit(:title, :space_id, :event_type_id, :producer)
   end
 end
