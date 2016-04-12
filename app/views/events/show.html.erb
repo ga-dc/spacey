@@ -2,6 +2,7 @@
 <%= @event.space.title %>
 <%= @event.start_date.strftime("%F %H:%M") %> -
 <%= @event.end_date.strftime("%F %H:%M") %>
+<%= link_to "Edit", edit_event_path(@event)%> | 
 <%= link_to "Delete", event_path(@event), method: :delete %>
 
 <h3>Notes</h3>
