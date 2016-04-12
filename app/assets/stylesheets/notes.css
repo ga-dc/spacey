@@ -1,0 +1,10 @@
+.note{
+  border: 1px solid #ccc;
+  padding:1em;
+  margin-bottom:1em;
+  border-radius: 3px;
+}
+
+.note :last-child{
+  margin-bottom:0;
+}

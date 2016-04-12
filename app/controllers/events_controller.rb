@@ -17,6 +17,7 @@ class EventsController < ApplicationController
   end
   def show
     @event = Event.find(params[:id])
+    @note = Note.new
   end
   def destroy
     @event = Event.find(params[:id])

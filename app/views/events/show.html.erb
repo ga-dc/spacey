@@ -2,5 +2,18 @@
 <%= @event.space.title %>
 <%= @event.start_date.strftime("%F %H:%M") %> -
 <%= @event.end_date.strftime("%F %H:%M") %>
-
 <%= link_to "Delete", event_path(@event), method: :delete %>
+
+<h3>Notes</h3>
+<%= form_for [@event, @note] do |f| %>
+  <%= f.text_area :text %>
+  <%= f.submit %>
+<% end %>
+<% @event.notes.each do |note| %>
+  <div class='note'>
+    <small>Last updated <%= time_ago_in_words(note.updated_at) %> ago</small>
+    <p>
+      <%= note.text %>
+    </p>
+  </div>
+<% end %>
