@@ -3,6 +3,7 @@ class Event < ActiveRecord::Base
   belongs_to :event_type
   validate :is_available
   has_many :reservations
+  has_many :notes
   def repeat days
     days = self.end_date - self.start_date
     current_day = self.start_date
