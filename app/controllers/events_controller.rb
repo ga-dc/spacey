@@ -15,9 +15,22 @@ class EventsController < ApplicationController
       render "new"
     end
   end
+  def update
+    start_date = DateTime.parse(params[:event][:start_date])
+    end_date = DateTime.parse(params[:event][:end_date])
+    @event = Event.find(params[:id])
+    if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
+      redirect_to "/days/" + @event.start_date.strftime("%F")
+    else
+      render "edit"
+    end
+  end
   def show
     @event = Event.find(params[:id])
     @note = Note.new
+  end
+  def edit
+    @event = Event.find(params[:id])
   end
   def destroy
     @event = Event.find(params[:id])
