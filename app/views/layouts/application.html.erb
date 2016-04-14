@@ -11,6 +11,9 @@
 <h1>
 <%= link_to image_tag("spacey.png"), root_path %>
 </h1>
+<% if current_user %>
+    <%= link_to "Logout #{current_user.name}", logout_path %>
+    <br><br>
 <nav>
   <%= link_to "New Event", new_event_path %>
   <%= link_to "Today", "/days/" + Time.now.strftime("%F") %>
@@ -19,6 +22,9 @@
 <br>
 
 <%= yield %>
+<% else %>
+  Please <%= link_to "log in.", "/auth/google_oauth2" %>
+<% end %>
 
 <footer>
 <a href='https://github.com/ga-dc/spacey'>
