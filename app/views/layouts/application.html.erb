@@ -11,6 +11,9 @@
 <h1>
 <%= link_to image_tag("spacey.png"), root_path %>
 </h1>
+<% if flash[:notice] %>
+  <p class="flash-notice"><%= flash[:notice] %></p>
+<% end %>
 <% if current_user %>
     <%= link_to "Logout #{current_user.name}", logout_path %>
     <br><br>
