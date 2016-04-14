@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get "/days/:date", to: 'events#show_date'
   root to: 'events#show_date'
   get 'events/check_availability', to: 'events#check_availability'
+  get "/auth/:provider/callback", to: "sessions#create"
+  get "/logout", to: "sessions#destroy"
   resources :spaces do
     resources :events
   end
