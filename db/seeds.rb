@@ -45,6 +45,7 @@ events = Event.create!([
   instructor: "Jesse Shawl",
   start_date: DateTime.now.change({hour: 5, minute: 0}),
   end_date: DateTime.now.change({hour: 13, minute:0}),
+  approved: true,
   event_type: types[2]
 },
 {
@@ -54,6 +55,7 @@ events = Event.create!([
   instructor: "Jesse Shawl",
   start_date: DateTime.now.change({hour: 10, minute: 0}),
   end_date: DateTime.now.change({hour: 11, minute:0}),
+  approved: true,
   event_type: types[1]
 }
 ])

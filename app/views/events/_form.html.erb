@@ -25,5 +25,8 @@
   <%= f.label :producer %>
   <%= f.text_field :producer %>
   <br>
+  <%= f.label :approved %>
+  <%= f.check_box :approved %>
+  <br>
   <%= f.submit :"Check Availability", class: "js-submit-event" %>
 <% end %>

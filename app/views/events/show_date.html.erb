@@ -13,6 +13,13 @@
     height:500px;
     overflow:visible;
   }
+  [data-approved="false"]{
+    opacity: .5;
+    stroke: #000;
+    fill: none;
+    stroke-dasharray: 5,5; 
+    stroke-width: 2;
+  }
 </style>
 <div class='wrap'>
   <svg class='cal'></svg>
@@ -118,6 +125,9 @@
     return d.color
   })
   .attr("x", offsetX)
+  .attr("data-approved", function(d){
+    return d.approved ? "" + d.approved : "false"
+  })
   .attr("href", function(d){
     return "/events/" + d.id
   })
