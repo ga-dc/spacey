@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160414140851) do
+ActiveRecord::Schema.define(version: 20160504223410) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "event_types", force: :cascade do |t|
     t.string "color"
@@ -28,9 +31,10 @@ ActiveRecord::Schema.define(version: 20160414140851) do
     t.string   "instructor"
     t.integer  "event_type_id"
     t.boolean  "approved"
+    t.integer  "number_of_attendees"
   end
 
-  add_index "events", ["space_id"], name: "index_events_on_space_id"
+  add_index "events", ["space_id"], name: "index_events_on_space_id", using: :btree
 
   create_table "notes", force: :cascade do |t|
     t.text     "text"
@@ -39,7 +43,7 @@ ActiveRecord::Schema.define(version: 20160414140851) do
     t.datetime "updated_at"
   end
 
-  add_index "notes", ["event_id"], name: "index_notes_on_event_id"
+  add_index "notes", ["event_id"], name: "index_notes_on_event_id", using: :btree
 
   create_table "spaces", force: :cascade do |t|
     t.string  "title"
@@ -55,4 +59,6 @@ ActiveRecord::Schema.define(version: 20160414140851) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "events", "spaces"
+  add_foreign_key "notes", "events"
 end

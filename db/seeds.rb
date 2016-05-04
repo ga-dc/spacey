@@ -1,6 +1,7 @@
+Note.destroy_all
+Event.destroy_all
 Space.destroy_all
 EventType.destroy_all
-Event.destroy_all
 spaces = Space.create([
   { title:"Classroom 1", capacity: 30 },
   { title:"Classroom 2", capacity: 30 },
