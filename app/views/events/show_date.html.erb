@@ -1,7 +1,7 @@
 <%= link_to "&laquo; Yesterday".html_safe, "/days/" + @yesterday %>
 &nbsp;<%= @today %>&nbsp;
 <%= link_to "Tomorrow &raquo;".html_safe, "/days/" + @tomorrow %>
-<%= link_to "Week View".html_safe, "/weeks/" + @week %>
+<%= link_to "Week View".html_safe, "/weeks/#{@year}/" + @week %>
 <br>
 <style>
   .wrap{

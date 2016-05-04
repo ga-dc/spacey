@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   get "/classroom-utilization", to: "classroom_utilization#index"
   get "/days/:date", to: 'events#show_date'
-  get "/weeks/:number", to: 'events#show_week'
+  get "/weeks/:year/:number", to: 'events#show_week'
   root to: 'events#show_date'
   get 'events/check_availability', to: 'events#check_availability'
   get "/auth/:provider/callback", to: "sessions#create"
