@@ -44,6 +44,16 @@ class EventsController < ApplicationController
     @tomorrow = (Date.parse(day) + 1.day).strftime("%F")
     @spaces = Space.all
     @events = Event.by_date(day)
+    @year = Date.parse(day).strftime("%Y")
+    @week = Date.parse(day).strftime("%W")
+  end
+  def show_week
+    @year = params[:year].to_i
+    week = params[:number].to_i
+    @start_of_week = Date.commercial(@year, week, 1)
+    @end_of_week = Date.commercial(@year, week, 7)
+    @events = Event.where("start_date > ? AND end_date < ?", @start_of_week, @end_of_week)
+    @spaces = Space.all
   end
   def check_availability
     start = DateTime.parse(params[:start_date])
