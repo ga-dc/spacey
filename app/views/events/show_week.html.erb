@@ -144,7 +144,7 @@
   })
   .append("title")
   .text(function(d){
-    return moment.utc(d.start_date).format("h:mma") + " - " + moment.utc(d.end_date).format("h:mma")
+    return d.title + " \n" + moment.utc(d.start_date).format("h:mma") + " - " + moment.utc(d.end_date).format("h:mma")
   })
 
   square
