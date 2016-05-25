@@ -34,6 +34,12 @@
      return scaleX(hours + minutes) * (1/7)
   }
   var scaleWeek = d3.scale.linear().domain([0,7]).range([0,100])
+  // add date with day names from empty array
+  var labels = new Array(7).fill('').map(function(el, i){
+    var m = moment('<%= @start_of_week %>')
+    var d = m.add(i, 'days').format('dd MM/DD')
+    return d;
+  })
 
   var svg = d3
   .select(".cal")
@@ -43,7 +49,7 @@
   .append("g")
   .attr("class","X Axis")
   .selectAll("text")
-  .data(["M", "T", "W", "Th", "F", "Sa", "Su"])
+  .data(labels)
   .enter()
   .append("text")
   .attr("x",function(d, i){
