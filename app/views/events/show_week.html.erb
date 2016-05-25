@@ -34,10 +34,10 @@
      return scaleX(hours + minutes) * (1/7)
   }
   var scaleWeek = d3.scale.linear().domain([0,7]).range([0,100])
-  // add date with day names from empty array
-  var labels = new Array(7).fill('').map(function(el, i){
+  // create array of momment objects of dates from empty array
+  var dates = new Array(7).fill('').map(function(el, i){
     var m = moment('<%= @start_of_week %>')
-    var d = m.add(i, 'days').format('dd MM/DD')
+    var d = m.add(i, 'days')
     return d;
   })
 
@@ -47,9 +47,9 @@
   // x axis
   svg
   .append("g")
-  .attr("class","X Axis")
+  .attr("class","X Axis week")
   .selectAll("text")
-  .data(labels)
+  .data(dates)
   .enter()
   .append("text")
   .attr("x",function(d, i){
@@ -59,7 +59,11 @@
   .attr("fill", "#000")
   .style("font-size", "10px")
   .text(function(d){
-    return d
+    return d.format('dd MM/DD')
+  })
+  .on("click", function(d){
+    var href = "/days/"+ d.format('YYYY-MM-DD')
+    window.location = href
   })
 
   // y axis
