@@ -98,6 +98,12 @@
   .attr("stroke", "#eee")
   .attr("stroke-width", "1")
 
+  var tooltip = d3
+  .select("body")
+	.append("div")
+  .attr('class', 'd3-tip')
+	.text("a simple tooltip");
+
   var square = d3
   .select(".cal")
   .selectAll(".events")
@@ -105,6 +111,20 @@
   .enter()
   .append("g")
   .attr("class","events")
+  .on("mouseover", function(d){
+    tooltip
+    .text(function(){
+      return d.title + " \n" + moment.utc(d.start_date).format("h:mma") + " - " + moment.utc(d.end_date).format("h:mma")
+    })
+    .style("visibility", "visible");
+    return tooltip;
+  })
+  .on("mousemove", function(){
+    return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");
+  })
+  .on("mouseout", function(){
+    return tooltip.style("visibility", "hidden");
+  });
 
   square.append("rect")
   .text(function(d){
@@ -143,9 +163,6 @@
     window.location = this.getAttribute("href")
   })
   .append("title")
-  .text(function(d){
-    return d.title + " \n" + moment.utc(d.start_date).format("h:mma") + " - " + moment.utc(d.end_date).format("h:mma")
-  })
 
   square
   .append("text")
