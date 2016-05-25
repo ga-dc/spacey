@@ -61,6 +61,10 @@ nav a {
   padding: .5em;
 }
 
+.X.week text {
+  cursor: pointer;
+}
+
 .events rect{
   cursor: pointer;
 }
