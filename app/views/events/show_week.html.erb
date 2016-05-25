@@ -98,6 +98,11 @@
   .attr("stroke", "#eee")
   .attr("stroke-width", "1")
 
+  var tooltip = d3
+  .select("body")
+	.append("div")
+  .attr('class', 'd3-tip')
+
   var square = d3
   .select(".cal")
   .selectAll(".events")
@@ -105,6 +110,25 @@
   .enter()
   .append("g")
   .attr("class","events")
+  .on("mouseover", function(d){
+    tooltip
+    .html(function(){
+      var el = "<p>"+ d.title +"</p>"
+      +"<p>"+ moment.utc(d.start_date).format("h:mma") + " - " + moment.utc(d.end_date).format("h:mma") +"</p>"
+      +"<p>Producer: "+ d.producer +"</p>"
+      +"<p>Instructor: "+ d.instructor +"</p>"
+      +"<p>Attendees: "+ d.number_of_attendees +"</p>"
+      return el
+    })
+    .style("visibility", "visible");
+    return tooltip;
+  })
+  .on("mousemove", function(){
+    return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");
+  })
+  .on("mouseout", function(){
+    return tooltip.style("visibility", "hidden");
+  });
 
   square.append("rect")
   .text(function(d){
@@ -143,9 +167,6 @@
     window.location = this.getAttribute("href")
   })
   .append("title")
-  .text(function(d){
-    return moment.utc(d.start_date).format("h:mma") + " - " + moment.utc(d.end_date).format("h:mma")
-  })
 
   square
   .append("text")
