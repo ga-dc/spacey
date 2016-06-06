@@ -9,7 +9,15 @@ spaces = Space.create([
   { title:"Classroom 4", capacity: 30 },
   { title:"Classroom 5", capacity: 30 },
   { title:"Classroom 6", capacity: 30 },
-  { title:"Classroom 13", capacity: 30 }
+  { title:"Front Lounge", capacity: 30 },
+  { title:"Lobby Classroom", capacity: 30 },
+  { title:"Jobs Room", capacity: 30 },
+  { title:"Gates Room", capacity: 30 },
+  { title:"Board Room", capacity: 30 },
+  { title:"12 Floor A Space", capacity: 30 },
+  { title:"12 Floor B Space", capacity: 30 },
+  { title:"12 Floor C Space", capacity: 30 },
+  { title:"OpenGovHub", capacity: 30 }
 ])
 
 types = EventType.create([
