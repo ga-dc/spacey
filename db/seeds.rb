@@ -26,16 +26,10 @@ types = EventType.create([
 today = DateTime.now.strftime("%e").to_i
 7.times do |i|
   i += today
-  e = Event.create!(
-    title: "NASA",
-    space: spaces[4],
-    start_date: DateTime.now.change({hour: 5, minute: 0, day: i}),
-    end_date: DateTime.now.change({hour: 7, minute:0, day: i}),
-  )
   events = Event.create!([
   {
     title: "NASA 2",
-    space: spaces[1],
+    space: spaces[4],
     start_date: DateTime.now.change({hour: 5, minute: 0, day: i}),
     end_date: DateTime.now.change({hour: 7, minute:0, day: i}),
     event_type: types[3]
