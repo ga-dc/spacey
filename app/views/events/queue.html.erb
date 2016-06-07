@@ -1,0 +1,28 @@
+<% @events.each do |e| %>
+  <% if e.errors.any? %>
+    <% e.errors.full_messages.each do |err| %>
+      <div class='error'>
+        <%= err %>
+      </div>
+    <% end %>
+  <% end %>
+  <div>
+    <h2><%= e.title %></h2>
+    <p><%= e.start_date %></p>
+    <p><%= e.end_date %></p>
+    <%= form_for e, url: event_update_approval_path(e), method: :patch do |f| %>
+      <%= f.hidden_field :title %>
+      <%= f.hidden_field :start_date %>
+      <%= f.hidden_field :end_date %>
+      <%= f.hidden_field :space_id %>
+      <%= f.hidden_field :kind %>
+      <%= f.hidden_field :producer %>
+      <%= f.hidden_field :instructor %>
+      <%= f.hidden_field :event_type_id %>
+      <%= f.hidden_field :number_of_attendees %>
+      <%= f.label :approved %>
+      <%= f.check_box :approved %>
+      <%= f.submit :"Check Availability", class: "js-submit-event" %>
+    <% end %>
+  </div>
+<% end %>

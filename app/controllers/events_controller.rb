@@ -25,6 +25,14 @@ class EventsController < ApplicationController
       render "edit"
     end
   end
+  def update_approval
+    @event = Event.find(params[:event_id])
+    if @event.update!(event_params)
+      redirect_to events_queue_path
+    else
+      render :index
+    end
+  end
   def show
     @event = Event.find(params[:id])
     @note = Note.new
@@ -64,6 +72,9 @@ class EventsController < ApplicationController
     else
       render json: true
     end
+  end
+  def queue
+    @events = Event.where(approved: nil).order(start_date: :desc)
   end
   private
   def event_params
