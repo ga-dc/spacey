@@ -31,6 +31,7 @@ body{
   max-width:80em;
   margin:auto;
   padding:0 2em;
+  font-family: Georgia, serif;
 }
 
 footer{
@@ -85,4 +86,10 @@ nav a {
 
 h1 img{
   width:50px;
+}
+
+label{
+  display:inline-block;
+  width:100px;
+  margin-bottom:1em;
 }

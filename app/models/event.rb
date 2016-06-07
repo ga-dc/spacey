@@ -1,7 +1,8 @@
 class Event < ActiveRecord::Base
   belongs_to :space
   belongs_to :event_type
-  validate :is_available
+  validate :is_available, :room_capactity
+  validates :space_id, :start_date, :end_date, :title, presence: true
   has_many :reservations
   has_many :notes
   def repeat days
@@ -25,6 +26,12 @@ class Event < ActiveRecord::Base
     @events = Event.where('space_id = ?', self.space_id).where('id != ?', self.id).where('(start_date <= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)', start, start, endd, endd)
     if @events.count > 0
       errors.add(:event, "space and time are not available during the date/time you requested." )
+    end
+  end
+  def room_capactity
+    @space = Space.find(self.space_id)
+    if self.number_of_attendees && self.number_of_attendees > @space.capacity
+      errors.add(:event, "space selected has a max capacity of #{@space.capacity}, please select a different space." )
     end
   end
 
