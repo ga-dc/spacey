@@ -30,7 +30,7 @@ class Event < ActiveRecord::Base
   end
   def room_capactity
     @space = Space.find(self.space_id)
-    if self.number_of_attendees > @space.capacity
+    if self.number_of_attendees && self.number_of_attendees > @space.capacity
       errors.add(:event, "space selected has a max capacity of #{@space.capacity}, please select a different space." )
     end
   end
