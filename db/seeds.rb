@@ -3,13 +3,17 @@ EventType.destroy_all
 Event.destroy_all
 Space.destroy_all
 spaces = Space.create([
-  { title:"Classroom 1", capacity: 30 },
-  { title:"Classroom 2", capacity: 30 },
-  { title:"Classroom 3", capacity: 30 },
-  { title:"Classroom 4", capacity: 30 },
-  { title:"Classroom 5", capacity: 30 },
-  { title:"Classroom 6", capacity: 30 },
-  { title:"Classroom 13", capacity: 30 }
+  { title:"Classroom 1", capacity: 28 },
+  { title:"Classroom 2", capacity: 36 },
+  { title:"Classroom 3", capacity: 28 },
+  { title:"Classroom 4", capacity: 28 },
+  { title:"Classroom 5", capacity: 36 },
+  { title:"Classroom 6", capacity: 28 },
+  { title:"Front Lounge", capacity: 20 },
+  { title:"Lobby Classroom", capacity: 25 },
+  { title:"12th Floor - Boardroom", capacity: 25 },
+  { title:"12th Floor - Gates Room", capacity: 10 },
+  { title:"12th Floor - Jobs Room", capacity: 10 }
 ])
 
 types = EventType.create([
