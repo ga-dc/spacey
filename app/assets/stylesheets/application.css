@@ -93,3 +93,10 @@ label{
   width:100px;
   margin-bottom:1em;
 }
+
+.queue_item {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: .5em;
+  margin: 2px;
+}
