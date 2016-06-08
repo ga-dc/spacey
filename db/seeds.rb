@@ -36,7 +36,8 @@ today = DateTime.now.strftime("%e").to_i
     space: spaces[4],
     start_date: DateTime.now.change({hour: 5, minute: 0, day: i}),
     end_date: DateTime.now.change({hour: 7, minute:0, day: i}),
-    event_type: types[3]
+    event_type: types[3],
+    event_style: "Lecture"
   },
   {
     title: "WDI",
@@ -46,7 +47,8 @@ today = DateTime.now.strftime("%e").to_i
     start_date: DateTime.now.change({hour: 5, minute: 0, day: i}),
     end_date: DateTime.now.change({hour: 13, minute:0, day: i}),
     approved: true,
-    event_type: types[2]
+    event_type: types[2],
+    event_style: "Class"
   },
   {
     title: "UXDI8 Orientation",
@@ -56,7 +58,8 @@ today = DateTime.now.strftime("%e").to_i
     start_date: DateTime.now.change({hour: 5, minute: 0, day: i}),
     end_date: DateTime.now.change({hour: 7, minute:0, day: i}),
     approved: true,
-    event_type: types[1]
+    event_type: types[1],
+    event_style: "Class"
   }
   ])
 
