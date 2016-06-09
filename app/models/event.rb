@@ -1,7 +1,7 @@
 class Event < ActiveRecord::Base
   belongs_to :space
   belongs_to :event_type
-  validate :is_available, :room_capactity
+  validate :is_available
   validates :space_id, :start_date, :end_date, :title, presence: true
   has_many :reservations
   has_many :notes

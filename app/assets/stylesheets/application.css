@@ -46,11 +46,12 @@ footer a {
 }
 
 h1, h2, h3, h4,
-nav{
+nav, a{
   font-family: 'Helvetica';
 }
 
 h1 a,
+h2 a,
 nav a{
   text-decoration:none;
   color:inherit;
@@ -94,9 +95,26 @@ label{
   margin-bottom:1em;
 }
 
+form {
+  display: inline-block;
+}
+
+.button {
+  margin: 5px 0;
+  font-size: 11px;
+  color: inherit;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: .5em;
+}
+
 .queue_item {
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: .5em;
-  margin: 2px;
+  margin: 5px 0;
 }

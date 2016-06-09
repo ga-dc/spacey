@@ -2,8 +2,8 @@
 <%= @event.space.title %>
 <%= @event.start_date.strftime("%F %H:%M") %> -
 <%= @event.end_date.strftime("%F %H:%M") %>
-<%= link_to "Edit", edit_event_path(@event)%> | 
-<%= link_to "Delete", event_path(@event), method: :delete %>
+<%= link_to "Edit", edit_event_path(@event), class: 'button'%>
+<%= link_to "Delete", event_path(@event), method: :delete, class: 'button' %>
 
 <h3>Notes</h3>
 <%= form_for [@event, @note] do |f| %>
