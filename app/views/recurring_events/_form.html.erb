@@ -1,0 +1,49 @@
+<% if @recurring_event.errors.any? %>
+  <% @recurring_event.errors.full_messages.each do |err| %>
+    <div class='error'>
+      <%= err %>
+    </div>
+  <% end %>
+<% end %>
+<%= form_for @recurring_event do |f| %>
+  <%= f.label :title %>
+  <%= f.text_field :title, required: true %>
+  <br>
+  <%= f.label :space_id %>
+  <%= f.select :space_id, Space.all.collect{|s| [s.title, s.id] } %>
+  <br>
+  <%= f.label :event_style %>
+  <%= f.select :event_style, ["Class", "Lecture"], selected: "Class" %>
+  <br>
+  <%= f.label :event_type_id %>
+  <% kinds = ["Immersive", "Part Time Course", "Info Session", "C&W", "Event", "Alumni", "Internal"]%>
+  <%= f.select :event_type_id, EventType.all.collect{|et| [et.title, et.id] } %>
+  <br>
+  <%= f.label :weeks_repeated, "Weeks repeated"%>
+  <%= f.number_field :weeks_repeated %>
+  <br>
+  <%= f.label :days_repeated_on, "Days to Repeat" %>
+  <%= f.select :days_repeated_on, [["Monday", true], ["Tuesday", true], ["Wednesday", true], ["Thursday", true], ["Friday", true], ["Saturday", true], ["Sunday", true]], {}, {multiple: true} %>
+  
+  <!-- t.boolean  "days_repeated_on",    default: [false, false, false, false, false, false, false], array: true -->
+  <br>
+  <%= f.label :start_date %>
+  <input class='datetimepicker' name='event[start_date]' required="true" value="<%= @recurring_event.start_date%>" >
+  <br>
+  <%= f.label :end_date %>
+  <input class='datetimepicker' name='event[end_date]' required="true" value="<%=@recurring_event.end_date %>">
+  <br>
+  <%= f.label :producer %>
+  <%= f.text_field :producer %>
+  <br>
+  <%= f.label :instructor %>
+  <%= f.text_field :instructor %>
+  <br>
+  <%= f.label :number_of_attendees %>
+  <%= f.number_field :number_of_attendees %>
+  <br>
+  <%= f.label :approved %>
+  <%= f.check_box :approved %>
+  <br>
+  <%= f.submit :"Check Availability", class: "js-submit-event" %>
+<% end %>

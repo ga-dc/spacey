@@ -1,9 +1,10 @@
 class Event < ActiveRecord::Base
   belongs_to :space
   belongs_to :event_type
+  belongs_to :recurring_event
+  # belongs_to :recurring_event, optional: true
   validate :is_available, :room_capactity
   validates :space_id, :start_date, :end_date, :title, :event_style, presence: true
-  has_many :reservations
   has_many :notes
   def repeat days
     days = self.end_date - self.start_date

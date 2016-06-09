@@ -9,6 +9,7 @@ class EventsController < ApplicationController
     start_date = DateTime.parse(params[:event][:start_date])
     end_date = DateTime.parse(params[:event][:end_date])
     @event = Event.new(event_params.merge(start_date: start_date, end_date: end_date))
+    # TODO check is_recurring for redirect_to 
     if @event.save
       redirect_to "/days/" + @event.start_date.strftime("%F")
     else
@@ -19,6 +20,7 @@ class EventsController < ApplicationController
     start_date = DateTime.parse(params[:event][:start_date])
     end_date = DateTime.parse(params[:event][:end_date])
     @event = Event.find(params[:id])
+    # TODO check is_recurring for redirect_to 
     if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
       redirect_to "/days/" + @event.start_date.strftime("%F")
     else
@@ -67,6 +69,6 @@ class EventsController < ApplicationController
   end
   private
   def event_params
-    params.require(:event).permit(:title, :space_id, :event_type_id, :producer, :approved, :instructor, :number_of_attendees, :event_style)
+    params.require(:event).permit(:title, :space_id, :event_type_id, :producer, :approved, :instructor, :number_of_attendees, :event_style, :is_recurring)
   end
 end

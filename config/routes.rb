@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     resources :events
   end
   resources :event_types
+  resources :recurring_events
   resources :events do
     resources :notes
   end
