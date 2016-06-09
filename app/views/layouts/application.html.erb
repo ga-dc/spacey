@@ -19,6 +19,7 @@
     <br><br>
 <nav>
   <%= link_to "New Event", new_event_path %>
+  <%= link_to "Queue", events_queue_path %>
   <%= link_to "Today", "/days/" + Time.now.strftime("%F") %>
   <%= link_to "Settings", settings_path %>
 </nav>

@@ -1,0 +1,34 @@
+<p><%= @events.count %> events to process</p>
+<% @events.each do |e| %>
+  <% if e.errors.any? %>
+    <% e.errors.full_messages.each do |err| %>
+      <div class='error'>
+        <%= err %>
+      </div>
+    <% end %>
+  <% end %>
+  <div class="queue_item">
+    <h2><%= e.title %></h2>
+    <p><%= e.start_date.strftime("%F %H:%M") %> - <%= e.end_date.strftime("%F %H:%M") %></p>
+    <p><%= e.kind %></p>
+    <p><%= Space.find(e.space_id).title %></p>
+    <p><%= e.producer %></p>
+    <p><%= e.instructor %></p>
+    <%= form_for e, url: event_update_approval_path(e), method: :patch do |f| %>
+      <%= f.hidden_field :title %>
+      <%= f.hidden_field :start_date %>
+      <%= f.hidden_field :end_date %>
+      <%= f.hidden_field :space_id %>
+      <%= f.hidden_field :kind %>
+      <%= f.hidden_field :producer %>
+      <%= f.hidden_field :instructor %>
+      <%= f.hidden_field :event_type_id %>
+      <%= f.hidden_field :number_of_attendees %>
+      <%= f.hidden_field :approved %>
+      <%= f.submit 'Approve', class: 'button' %>
+      <%= f.submit 'Deny', class: 'button' %>
+    <% end %>
+    <%= link_to 'Edit', edit_event_path(e), class: 'button'%>
+    <%= link_to 'Details', event_path(e), class: 'button' %> 
+  </div>
+<% end %>

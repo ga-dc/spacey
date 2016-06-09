@@ -4,9 +4,8 @@
 <p><%= @event.space.title %></p>
 <p><%= @event.event_style %></p>
 <p>Attendees: <%= @event.number_of_attendees %></p>
-<%= link_to "Edit", edit_event_path(@event)%> | 
-<%= link_to "Delete", event_path(@event), method: :delete %>
-
+<%= link_to "Edit", edit_event_path(@event), class: 'button'%>
+<%= link_to "Delete", event_path(@event), method: :delete, class: 'button' %>
 <h3>Notes</h3>
 <%= form_for [@event, @note] do |f| %>
   <%= f.text_area :text %>
