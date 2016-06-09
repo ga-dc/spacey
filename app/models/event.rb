@@ -1,8 +1,8 @@
 class Event < ActiveRecord::Base
   belongs_to :space
   belongs_to :event_type
-  validate :is_available
-  validates :space_id, :start_date, :end_date, :title, presence: true
+  validate :is_available, :room_capactity
+  validates :space_id, :start_date, :end_date, :title, :event_style, presence: true
   has_many :reservations
   has_many :notes
   def repeat days
@@ -30,8 +30,15 @@ class Event < ActiveRecord::Base
   end
   def room_capactity
     @space = Space.find(self.space_id)
-    if self.number_of_attendees && self.number_of_attendees > @space.capacity
-      errors.add(:event, "space selected has a max capacity of #{@space.capacity}, please select a different space." )
+    
+    if self.event_style == 'Lecture'
+      if self.number_of_attendees && self.number_of_attendees > @space.lecture_cap
+        errors.add(:event, "space selected has a max lecture capacity of #{@space.lecture_cap}, please select a different space." )
+      end
+    else
+      if self.number_of_attendees && self.number_of_attendees > @space.classroom_cap
+        errors.add(:event, "space selected has a max classroom capacity of #{@space.classroom_cap}, please select a different space." )
+      end
     end
   end
 

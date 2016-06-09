@@ -3,13 +3,17 @@ EventType.destroy_all
 Event.destroy_all
 Space.destroy_all
 spaces = Space.create([
-  { title:"Classroom 1", capacity: 30 },
-  { title:"Classroom 2", capacity: 30 },
-  { title:"Classroom 3", capacity: 30 },
-  { title:"Classroom 4", capacity: 30 },
-  { title:"Classroom 5", capacity: 30 },
-  { title:"Classroom 6", capacity: 30 },
-  { title:"Classroom 13", capacity: 30 }
+  { title:"Classroom 1", classroom_cap: 28, lecture_cap: 40 },
+  { title:"Classroom 2", classroom_cap: 36, lecture_cap: 60 },
+  { title:"Classroom 3", classroom_cap: 28, lecture_cap: 40 },
+  { title:"Classroom 4", classroom_cap: 28, lecture_cap: 40 },
+  { title:"Classroom 5", classroom_cap: 36, lecture_cap: 60 },
+  { title:"Classroom 6", classroom_cap: 28, lecture_cap: 40 },
+  { title:"Front Lounge", classroom_cap: nil, lecture_cap: 40 },
+  { title:"Lobby Classroom", classroom_cap: 20, lecture_cap: nil },
+  { title:"12th Floor - Boardroom", classroom_cap: 25, lecture_cap: 60 },
+  { title:"12th Floor - Gates Room", classroom_cap: 10, lecture_cap: nil },
+  { title:"12th Floor - Jobs Room", classroom_cap: 10, lecture_cap: nil }
 ])
 
 types = EventType.create([
@@ -32,7 +36,8 @@ today = DateTime.now.strftime("%e").to_i
     space: spaces[4],
     start_date: DateTime.now.change({hour: 5, minute: 0, day: i}),
     end_date: DateTime.now.change({hour: 7, minute:0, day: i}),
-    event_type: types[3]
+    event_type: types[3],
+    event_style: "Lecture"
   },
   {
     title: "WDI",
@@ -42,7 +47,8 @@ today = DateTime.now.strftime("%e").to_i
     start_date: DateTime.now.change({hour: 5, minute: 0, day: i}),
     end_date: DateTime.now.change({hour: 13, minute:0, day: i}),
     approved: true,
-    event_type: types[2]
+    event_type: types[2],
+    event_style: "Class"
   },
   {
     title: "UXDI8 Orientation",
@@ -52,7 +58,8 @@ today = DateTime.now.strftime("%e").to_i
     start_date: DateTime.now.change({hour: 5, minute: 0, day: i}),
     end_date: DateTime.now.change({hour: 7, minute:0, day: i}),
     approved: true,
-    event_type: types[1]
+    event_type: types[1],
+    event_style: "Class"
   }
   ])
 
