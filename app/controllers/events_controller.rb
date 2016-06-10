@@ -27,9 +27,25 @@ class EventsController < ApplicationController
       render "edit"
     end
   end
+  def update_approval
+    @event = Event.find(params[:event_id])
+    if params[:commit] == 'Approve'
+      @event.approved = true
+    elsif params[:commit] == 'Deny'
+      @event.approved = false
+    end
+    if @event.save!
+      redirect_to events_queue_path
+    else
+      redirect_to events_queue_path
+    end
+  end
   def show
     @event = Event.find(params[:id])
     @note = Note.new
+  end
+  def queue
+    @events = Event.where(approved: nil).order(start_date: :desc)
   end
   def edit
     @event = Event.find(params[:id])
@@ -60,7 +76,7 @@ class EventsController < ApplicationController
   def check_availability
     start = DateTime.parse(params[:start_date])
     endd = DateTime.parse(params[:end_date])
-    @events = Event.where('space_id = ?', params[:space_id]).where('(start_date <= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)', start, start, endd, endd)
+    @events = Event.same_space(params[:space_id]).overlaping(start, endd)
     if @events.count > 0
       render json: false
     else
@@ -69,6 +85,6 @@ class EventsController < ApplicationController
   end
   private
   def event_params
-    params.require(:event).permit(:title, :space_id, :event_type_id, :producer, :approved, :instructor, :number_of_attendees, :event_style, :is_recurring)
+    params.require(:event).permit(:title, :space_id, :event_type_id, :producer, :approved, :instructor, :number_of_attendees, :start_date, :end_date, :kind, :event_style)
   end
 end
