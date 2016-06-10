@@ -68,6 +68,8 @@ class EventsController < ApplicationController
     week = params[:number].to_i
     @start_of_week = Date.commercial(@year, week, 1)
     @end_of_week = Date.commercial(@year, week, 7)
+    @prev_week = @start_of_week - 1.week
+    @next_week = @start_of_week + 1.week
     @events = Event.where("start_date > ? AND end_date < ?", @start_of_week, @end_of_week)
     @spaces = Space.all
   end
