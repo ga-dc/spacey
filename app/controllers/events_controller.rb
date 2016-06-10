@@ -74,7 +74,7 @@ class EventsController < ApplicationController
   def check_availability
     start = DateTime.parse(params[:start_date])
     endd = DateTime.parse(params[:end_date])
-    @events = Event.where('space_id = ?', params[:space_id]).where('(start_date <= ? AND end_date >= ?) OR (start_date <= ? AND end_date >= ?)', start, start, endd, endd)
+    @events = Event.same_space(params[:space_id]).overlaping(start, endd)
     if @events.count > 0
       render json: false
     else
