@@ -1,4 +1,6 @@
 class Event < ActiveRecord::Base
+  include IceCube
+  
   has_many :reservations
   has_many :notes
   belongs_to :space
@@ -6,6 +8,8 @@ class Event < ActiveRecord::Base
   
   validate :is_available, :room_capactity
   validates :space_id, :start_date, :end_date, :title, :event_style, presence: true
+  
+  attr_accessor :recurring_rules
   
   scope :same_space, -> (space_id){ where('space_id = ?', space_id)}
   scope :diff_event, -> (event_id){ where('id != ?', event_id)}
@@ -46,5 +50,4 @@ class Event < ActiveRecord::Base
       end
     end
   end
-
 end

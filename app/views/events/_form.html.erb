@@ -25,6 +25,9 @@
   <%= f.label :end_date %>
   <input class='datetimepicker' name='event[end_date]' required="true" value="<%=@event.end_date %>">
   <br>
+  <%= f.label :recurring_rules, "Recurring?" %>
+  <%= f.select_recurring :recurring_rules, nil, :allow_blank => true %>
+  <br>
   <%= f.label :producer %>
   <%= f.text_field :producer %>
   <br>

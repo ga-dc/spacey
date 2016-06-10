@@ -1,4 +1,6 @@
 class EventsController < ApplicationController
+  include IceCube
+  
   def index
     @events = Event.all
   end
@@ -9,11 +11,16 @@ class EventsController < ApplicationController
     start_date = DateTime.parse(params[:event][:start_date])
     end_date = DateTime.parse(params[:event][:end_date])
     @event = Event.new(event_params.merge(start_date: start_date, end_date: end_date))
-    if @event.save
-      redirect_to "/days/" + @event.start_date.strftime("%F")
-    else
+    puts '*' * 50
+    rec_rules =  params['event']['recurring_rules']
+    sched = Schedule.from_hash(rec_rules)
+    puts sched
+    puts '*' * 50
+    # if @event.save
+    #   redirect_to "/days/" + @event.start_date.strftime("%F")
+    # else
       render "new"
-    end
+    # end
   end
   def update
     start_date = DateTime.parse(params[:event][:start_date])

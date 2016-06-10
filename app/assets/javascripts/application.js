@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery_ujs
 //= require moment
+//= require recurring_select
 //= require_tree .
 
 $(function(){
@@ -55,3 +56,9 @@ $(function(){
     })
   })
 })
+
+$.fn.recurring_select.options = {
+  monthly: {
+    show_week: [true, true, true, true, true, true]
+  }
+};
