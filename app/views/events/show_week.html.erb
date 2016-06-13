@@ -1,3 +1,7 @@
+<%= link_to "&laquo; Prev Week".html_safe, "/weeks/#{@prev_week.strftime('%Y')}/#{@prev_week.strftime('%W')}", class: 'button' %>
+&nbsp;<%= @start_of_week.strftime("%Y") %> Week 
+<%= @end_of_week.strftime("%W") %>&nbsp;
+<%= link_to "Next Week &raquo;".html_safe, "/weeks/#{@next_week.strftime('%Y')}/#{@next_week.strftime('%W')}", class: 'button' %>
 <br>
 <style>
   .wrap{
