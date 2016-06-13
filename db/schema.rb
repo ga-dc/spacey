@@ -11,10 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160613143632) do
+ActiveRecord::Schema.define(version: 20160613193039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "hstore"
 
   create_table "event_types", force: :cascade do |t|
     t.string "color"
@@ -34,7 +35,8 @@ ActiveRecord::Schema.define(version: 20160613143632) do
     t.integer  "number_of_attendees"
     t.string   "event_style"
     t.integer  "recurring_event_id"
-    t.text     "recurring_rules"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "events", ["recurring_event_id"], name: "index_events_on_recurring_event_id", using: :btree
@@ -50,8 +52,7 @@ ActiveRecord::Schema.define(version: 20160613143632) do
   add_index "notes", ["event_id"], name: "index_notes_on_event_id", using: :btree
 
   create_table "recurring_events", force: :cascade do |t|
-    t.integer  "weeks_repeated"
-    t.boolean  "days_repeated_on",    default: [false, false, false, false, false, false, false], array: true
+    t.hstore   "recurring_rules"
     t.string   "title"
     t.datetime "start_date"
     t.datetime "end_date"
@@ -63,6 +64,8 @@ ActiveRecord::Schema.define(version: 20160613143632) do
     t.string   "event_style"
     t.integer  "space_id"
     t.integer  "event_type_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   add_index "recurring_events", ["event_type_id"], name: "index_recurring_events_on_event_type_id", using: :btree

@@ -10,20 +10,23 @@ class EventsController < ApplicationController
   def create
     start_date = DateTime.parse(params[:event][:start_date])
     end_date = DateTime.parse(params[:event][:end_date])
-    @event = Event.new(event_params.merge(start_date: start_date, end_date: end_date))
-    puts '*' * 50
-    rec_rules =  params['event']['recurring_rules']
-    sched = Schedule.from_yaml(rec_rules)
-    puts sched
-    puts sched.inspect
-    puts '*' * 50
-    # if @event.save
-    #   redirect_to "/days/" + @event.start_date.strftime("%F")
-    # else
-      render "new"
-    # end
+    if params[:event][:recurring_rules]
+      Event.create_recurring_events(params, event_params, start_date, end_date)
+      redirect_to root_path
+    else
+      @event = Event.new(event_params.merge(start_date: start_date, end_date: end_date))
+      if @event.save
+        redirect_to "/days/" + @event.start_date.strftime("%F")
+      else
+        render "new"
+      end
+    end
   end
   def update
+    # TODO check if event is recurring
+      # ability to update single event w/o affecting all
+      # ability to update all connected recurring events
+      # ability to destroy all connected recurring events
     start_date = DateTime.parse(params[:event][:start_date])
     end_date = DateTime.parse(params[:event][:end_date])
     @event = Event.find(params[:id])
