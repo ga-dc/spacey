@@ -7,13 +7,25 @@ class Event < ActiveRecord::Base
   belongs_to :event_type
   
   validate :is_available, :room_capactity
-  validates :space_id, :start_date, :end_date, :title, :event_style, presence: true
+  # validates :space_id, :start_date, :end_date, :title, :event_style, presence: true
   
   attr_accessor :recurring_rules
   
   scope :same_space, -> (space_id){ where('space_id = ?', space_id)}
   scope :diff_event, -> (event_id){ where('id != ?', event_id)}
   scope :overlaping, -> (start, endd){ where('(? <= end_date AND ? >= start_date)', start, endd)}
+  
+  
+  serialize :recurring_rules, Hash
+
+  def recurring_rules=(new_recurring_rules)
+    write_attribute(:recurring_rules, RecurringSelect.dirty_hash_to_rule(new_recurring_rules).to_hash)
+  end
+  def converted_recurring_rules
+    the_recurring_rules = Schedule.new(self.start_date)
+    the_recurring_rules.add_recurrence_rule(RecurringSelect.dirty_hash_to_rule(self.recurring_rules))
+    the_recurring_rules
+  end
   
   def repeat days
     days = self.end_date - self.start_date

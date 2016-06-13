@@ -13,8 +13,9 @@ class EventsController < ApplicationController
     @event = Event.new(event_params.merge(start_date: start_date, end_date: end_date))
     puts '*' * 50
     rec_rules =  params['event']['recurring_rules']
-    sched = Schedule.from_hash(rec_rules)
+    sched = Schedule.from_yaml(rec_rules)
     puts sched
+    puts sched.inspect
     puts '*' * 50
     # if @event.save
     #   redirect_to "/days/" + @event.start_date.strftime("%F")
@@ -92,6 +93,6 @@ class EventsController < ApplicationController
   end
   private
   def event_params
-    params.require(:event).permit(:title, :space_id, :event_type_id, :producer, :approved, :instructor, :number_of_attendees, :start_date, :end_date, :kind, :event_style)
+    params.require(:event).permit(:title, :space_id, :event_type_id, :producer, :approved, :instructor, :number_of_attendees, :start_date, :end_date, :kind, :event_style, :recurring_rules)
   end
 end
