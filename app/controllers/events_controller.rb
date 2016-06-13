@@ -26,10 +26,14 @@ class EventsController < ApplicationController
     # TODO check if event is recurring
       # ability to update single event w/o affecting all
       # ability to update all connected recurring events
-      # ability to destroy all connected recurring events
     start_date = DateTime.parse(params[:event][:start_date])
     end_date = DateTime.parse(params[:event][:end_date])
     @event = Event.find(params[:id])
+    @recurring_events = RecurringEvent.find(@event.id)
+    if @recurring_events
+    else 
+    end
+    
     if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
       redirect_to "/days/" + @event.start_date.strftime("%F")
     else
@@ -37,6 +41,7 @@ class EventsController < ApplicationController
     end
   end
   def update_approval
+    # TODO bulk approval for recurring_events
     @event = Event.find(params[:event_id])
     if params[:commit] == 'Approve'
       @event.approved = true
@@ -51,6 +56,9 @@ class EventsController < ApplicationController
   end
   def show
     @event = Event.find(params[:id])
+    if @event.recurring_event_id
+      @recurring_event = RecurringEvent.find(@event.recurring_event_id)
+    end
     @note = Note.new
   end
   def queue

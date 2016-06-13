@@ -57,9 +57,9 @@ class Event < ActiveRecord::Base
     sched = Schedule.new(start_date, :duration => total_dur)
     sched.add_recurrence_rule(rec_rules)
     occurrences = sched.occurrences_between(start_date, end_date + 1.day) #WOMP WOMP
-    RecurringEvent.create!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
+    rec = RecurringEvent.create!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
     occurrences.each do |occurrence|
-      Event.create!(event_params.merge(start_date: occurrence, end_date: occurrence + dur_in_sec.seconds))
+      rec.events.create!(event_params.merge(start_date: occurrence, end_date: occurrence + dur_in_sec.seconds))
     end
   end
 end

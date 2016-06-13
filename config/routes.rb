@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :events
   end
   resources :event_types
+  resources :recurring_events, only: [:create, :update, :destroy]
   get 'events/check_availability', to: 'events#check_availability'
   get 'events/queue', to: 'events#queue'
   resources :events do
