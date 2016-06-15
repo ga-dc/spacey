@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(version: 20160613193039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
 
   create_table "event_types", force: :cascade do |t|
     t.string "color"
