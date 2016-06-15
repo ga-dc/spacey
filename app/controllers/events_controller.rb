@@ -20,7 +20,7 @@ class EventsController < ApplicationController
   def create
     start_date = DateTime.parse(params[:event][:start_date])
     end_date = DateTime.parse(params[:event][:end_date])
-    if params[:event][:recurring_rules]
+    if params[:event][:recurring_rules] != "null"
       Event.create_recurring_events(params, event_params, start_date, end_date)
       redirect_to root_path
     else
@@ -41,13 +41,10 @@ class EventsController < ApplicationController
     end
   end
   def update
-    # TODO check if event is recurring
-      # ability to update single event w/o affecting all
-      # ability to update all connected recurring events
     start_date = DateTime.parse(params[:event][:start_date])
     end_date = DateTime.parse(params[:event][:end_date])
     @event = Event.find(params[:id])
-    recurring_event = @event.recurring_event if @event.recurring_event_id # Brainstorm
+    recurring_event = @event.recurring_event if @event.recurring_event_id
     if params[:update_all]
       Event.update_recurring_events(params, event_params, start_date, end_date, recurring_event)
       redirect_to root_path

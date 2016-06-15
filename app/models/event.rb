@@ -51,15 +51,6 @@ class Event < ActiveRecord::Base
     end
   end
   # TODO validation for exceeding business hours
-  def self.recurring_helper(params, event_params, start_date, end_date)
-    rec_rules  = RecurringSelect.dirty_hash_to_rule(params['event']['recurring_rules'])
-    dur_in_sec = end_date.seconds_since_midnight - start_date.seconds_since_midnight
-    total_dur = (end_date.strftime("%s").to_i - start_date.strftime("%s").to_i)
-    sched = Schedule.new(start_date, :duration => total_dur)
-    sched.add_recurrence_rule(rec_rules)
-    occurrences = sched.occurrences_between(start_date, end_date + 1.day) #WOMP WOMP
-    return [dur_in_sec, sched, occurrences]
-  end
   def self.create_recurring_events(params, event_params, start_date, end_date)
     dur_in_sec, sched, occurrences = self.recurring_helper(params, event_params, start_date, end_date)
     rec = RecurringEvent.create!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
@@ -68,12 +59,28 @@ class Event < ActiveRecord::Base
     end
   end
   def self.update_recurring_events(params, event_params, start_date, end_date, recurring_event)
-    # 
+    new_st = start_date
+    new_et = end_date
+    if new_st.strftime('%D') == new_et.strftime('%D')
+      old_st = recurring_event.start_date.to_datetime
+      old_et = recurring_event.end_date.to_datetime
+      start_date = DateTime.new(old_st.year, old_st.month, old_st.day, new_st.hour, new_st.minute, new_st.second)
+      end_date = DateTime.new(old_et.year, old_et.month, old_et.day, new_et.hour, new_et.minute, new_et.second)
+    end
     dur_in_sec, sched, occurrences = self.recurring_helper(params, event_params, start_date, end_date)
     recurring_event.update!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
     recurring_event.events.destroy_all
     occurrences.each do |occurrence|
       recurring_event.events.create!(event_params.merge(start_date: occurrence, end_date: occurrence + dur_in_sec.seconds))
     end
+  end
+  def self.recurring_helper(params, event_params, start_date, end_date)
+    rec_rules  = RecurringSelect.dirty_hash_to_rule(params['event']['recurring_rules'])
+    dur_in_sec = end_date.seconds_since_midnight - start_date.seconds_since_midnight
+    total_dur = (end_date.strftime("%s").to_i - start_date.strftime("%s").to_i)
+    sched = Schedule.new(start_date, :duration => total_dur)
+    sched.add_recurrence_rule(rec_rules)
+    occurrences = sched.occurrences_between(start_date, end_date + 1.day)
+    return [dur_in_sec, sched, occurrences]
   end
 end
