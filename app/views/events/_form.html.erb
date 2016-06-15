@@ -58,7 +58,7 @@
   <%= f.label :approved %>
   <%= f.check_box :approved %>
   <br>
-  <%= f.submit :"Check Availability", class: "js-submit-event" %>
+  <%= f.submit %>
   <% if @recurring_event %>
   <%= f.submit :"Update all", name: 'update_all', data: {confirm: "Are you sure? This will change all events in the series."} %>
   <% end %>
