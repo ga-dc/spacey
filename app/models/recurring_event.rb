@@ -1,5 +1,5 @@
 class RecurringEvent < ActiveRecord::Base
-  has_many :events
-  has_many :spaces, through: :events
+  has_many :events, dependent: :destroy
+  has_many :spaces
   belongs_to :event_type
 end

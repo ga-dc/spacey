@@ -5,7 +5,10 @@
 <p><%= @event.event_style %></p>
 <p>Attendees: <%= @event.number_of_attendees %></p>
 <%= link_to "Edit", edit_event_path(@event), class: 'button'%>
-<%= link_to "Delete", event_path(@event), method: :delete, class: 'button' %>
+<%= link_to "Delete", event_path(@event), method: :delete, data: {confirm: "Are you sure?"}, class: 'button' %>
+<% if @recurring_event %>
+  <%= link_to "Delete All", recurring_event_path(@recurring_event), method: :delete, data: {confirm: "Are you sure?"}, class: 'button' %>
+<% end %>
 <h3>Notes</h3>
 <%= form_for [@event, @note] do |f| %>
   <%= f.text_area :text %>

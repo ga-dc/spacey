@@ -1,6 +1,18 @@
 class EventsController < ApplicationController
+  include IceCube
+  
   def index
     @events = Event.all
+  end
+  def show
+    @event = Event.find(params[:id])
+    if @event.recurring_event_id
+      @recurring_event = RecurringEvent.find(@event.recurring_event_id)
+    end
+    @note = Note.new
+  end
+  def queue
+    @events = Event.where(approved: nil).order(start_date: :desc)
   end
   def new
     @event = Event.new
@@ -8,24 +20,44 @@ class EventsController < ApplicationController
   def create
     start_date = DateTime.parse(params[:event][:start_date])
     end_date = DateTime.parse(params[:event][:end_date])
-    @event = Event.new(event_params.merge(start_date: start_date, end_date: end_date))
-    if @event.save
-      redirect_to "/days/" + @event.start_date.strftime("%F")
+    if params[:event][:recurring_rules] != "null"
+      Event.create_recurring_events(params, event_params, start_date, end_date)
+      redirect_to root_path
     else
-      render "new"
+      @event = Event.new(event_params.merge(start_date: start_date, end_date: end_date))
+      if @event.save
+        redirect_to "/days/" + @event.start_date.strftime("%F")
+      else
+        render "new"
+      end
+    end
+  end
+  def edit
+    @event = Event.find(params[:id])
+    if @event.recurring_event_id
+      @recurring_event = RecurringEvent.find(@event.recurring_event_id)
+    else 
+      @recurring_event = nil
     end
   end
   def update
     start_date = DateTime.parse(params[:event][:start_date])
     end_date = DateTime.parse(params[:event][:end_date])
     @event = Event.find(params[:id])
-    if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
-      redirect_to "/days/" + @event.start_date.strftime("%F")
-    else
-      render "edit"
+    recurring_event = @event.recurring_event if @event.recurring_event_id
+    if params[:update_all]
+      Event.update_recurring_events(params, event_params, start_date, end_date, recurring_event)
+      redirect_to root_path
+    else 
+      if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
+        redirect_to "/days/" + @event.start_date.strftime("%F")
+      else
+        render "edit"
+      end
     end
   end
   def update_approval
+    # TODO bulk approval for recurring_events
     @event = Event.find(params[:event_id])
     if params[:commit] == 'Approve'
       @event.approved = true
@@ -37,16 +69,6 @@ class EventsController < ApplicationController
     else
       redirect_to events_queue_path
     end
-  end
-  def show
-    @event = Event.find(params[:id])
-    @note = Note.new
-  end
-  def queue
-    @events = Event.where(approved: nil).order(start_date: :desc)
-  end
-  def edit
-    @event = Event.find(params[:id])
   end
   def destroy
     @event = Event.find(params[:id])
@@ -85,6 +107,6 @@ class EventsController < ApplicationController
   end
   private
   def event_params
-    params.require(:event).permit(:title, :space_id, :event_type_id, :producer, :approved, :instructor, :number_of_attendees, :start_date, :end_date, :kind, :event_style)
+    params.require(:event).permit(:title, :space_id, :event_type_id, :producer, :approved, :instructor, :number_of_attendees, :start_date, :end_date, :kind, :event_style, :recurring_rules)
   end
 end
