@@ -66,7 +66,6 @@ class Event < ActiveRecord::Base
   end
   def self.create_recurring_events(params, event_params, start_date, end_date)
     dur_in_sec, sched, occurrences = self.recurring_helper(params, event_params, start_date, end_date)
-    binding.pry
     rec = RecurringEvent.create!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
     occurrences.each do |occurrence|
       rec.events.create!(event_params.merge(start_date: occurrence, end_date: occurrence + dur_in_sec.seconds))
