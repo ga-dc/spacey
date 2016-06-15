@@ -1,8 +1,9 @@
 class Event < ActiveRecord::Base
   has_many :reservations
-  has_many :notes
+  has_many :notes, dependent: :destroy
   belongs_to :space
   belongs_to :event_type
+  belongs_to :recurring_event
   
   validate :is_available, :room_capactity
   validates :space_id, :start_date, :end_date, :title, :event_style, presence: true
@@ -50,16 +51,29 @@ class Event < ActiveRecord::Base
     end
   end
   # TODO validation for exceeding business hours
-  def self.create_recurring_events(params, event_params, start_date, end_date)
+  def self.recurring_helper(params, event_params, start_date, end_date)
     rec_rules  = RecurringSelect.dirty_hash_to_rule(params['event']['recurring_rules'])
     dur_in_sec = end_date.seconds_since_midnight - start_date.seconds_since_midnight
     total_dur = (end_date.strftime("%s").to_i - start_date.strftime("%s").to_i)
     sched = Schedule.new(start_date, :duration => total_dur)
     sched.add_recurrence_rule(rec_rules)
     occurrences = sched.occurrences_between(start_date, end_date + 1.day) #WOMP WOMP
+    return [dur_in_sec, sched, occurrences]
+  end
+  def self.create_recurring_events(params, event_params, start_date, end_date)
+    dur_in_sec, sched, occurrences = self.recurring_helper(params, event_params, start_date, end_date)
     rec = RecurringEvent.create!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
     occurrences.each do |occurrence|
       rec.events.create!(event_params.merge(start_date: occurrence, end_date: occurrence + dur_in_sec.seconds))
+    end
+  end
+  def self.update_recurring_events(params, event_params, start_date, end_date, recurring_event)
+    # 
+    dur_in_sec, sched, occurrences = self.recurring_helper(params, event_params, start_date, end_date)
+    recurring_event.update!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
+    recurring_event.events.destroy_all
+    occurrences.each do |occurrence|
+      recurring_event.events.create!(event_params.merge(start_date: occurrence, end_date: occurrence + dur_in_sec.seconds))
     end
   end
 end

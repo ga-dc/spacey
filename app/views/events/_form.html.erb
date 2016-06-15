@@ -26,7 +26,18 @@
   <input class='datetimepicker' name='event[end_date]' required="true" value="<%=@event.end_date %>">
   <br>
   <%= f.label :recurring_rules, "Recurring?" %>
-  <%= f.select_recurring :recurring_rules, nil, :allow_blank => true %>
+  <% if @recurring_event %>
+  <%= f.select_recurring :recurring_rules, [
+    IceCube::Schedule.from_hash(@recurring_event.recurring_rules).recurrence_rules[0],
+    IceCube::Rule.daily,
+    IceCube::Rule.weekly.day(:monday, :tuesday, :wednesday, :thursday, :friday)
+    ] %>
+  <% else %>
+  <%= f.select_recurring :recurring_rules, [
+    IceCube::Rule.daily,
+    IceCube::Rule.weekly.day(:monday, :tuesday, :wednesday, :thursday, :friday)
+    ], :allow_blank => true %>
+  <% end %>
   <br>
   <%= f.label :producer %>
   <%= f.text_field :producer %>
@@ -41,4 +52,7 @@
   <%= f.check_box :approved %>
   <br>
   <%= f.submit :"Check Availability", class: "js-submit-event" %>
+  <% if @recurring_event %>
+  <%= f.submit :"Update all", name: 'update_all', data: {confirm: "Are you sure? This will change all events in the series."} %>
+  <% end %>
 <% end %>

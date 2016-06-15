@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20160613193039) do
   add_index "notes", ["event_id"], name: "index_notes_on_event_id", using: :btree
 
   create_table "recurring_events", force: :cascade do |t|
-    t.hstore   "recurring_rules"
+    t.json     "recurring_rules"
     t.string   "title"
     t.datetime "start_date"
     t.datetime "end_date"

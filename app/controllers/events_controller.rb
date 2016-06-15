@@ -4,6 +4,16 @@ class EventsController < ApplicationController
   def index
     @events = Event.all
   end
+  def show
+    @event = Event.find(params[:id])
+    if @event.recurring_event_id
+      @recurring_event = RecurringEvent.find(@event.recurring_event_id)
+    end
+    @note = Note.new
+  end
+  def queue
+    @events = Event.where(approved: nil).order(start_date: :desc)
+  end
   def new
     @event = Event.new
   end
@@ -22,6 +32,14 @@ class EventsController < ApplicationController
       end
     end
   end
+  def edit
+    @event = Event.find(params[:id])
+    if @event.recurring_event_id
+      @recurring_event = RecurringEvent.find(@event.recurring_event_id)
+    else 
+      @recurring_event = nil
+    end
+  end
   def update
     # TODO check if event is recurring
       # ability to update single event w/o affecting all
@@ -29,15 +47,16 @@ class EventsController < ApplicationController
     start_date = DateTime.parse(params[:event][:start_date])
     end_date = DateTime.parse(params[:event][:end_date])
     @event = Event.find(params[:id])
-    @recurring_events = RecurringEvent.find(@event.id)
-    if @recurring_events
+    recurring_event = @event.recurring_event if @event.recurring_event_id # Brainstorm
+    if params[:update_all]
+      Event.update_recurring_events(params, event_params, start_date, end_date, recurring_event)
+      redirect_to root_path
     else 
-    end
-    
-    if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
-      redirect_to "/days/" + @event.start_date.strftime("%F")
-    else
-      render "edit"
+      if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
+        redirect_to "/days/" + @event.start_date.strftime("%F")
+      else
+        render "edit"
+      end
     end
   end
   def update_approval
@@ -53,19 +72,6 @@ class EventsController < ApplicationController
     else
       redirect_to events_queue_path
     end
-  end
-  def show
-    @event = Event.find(params[:id])
-    if @event.recurring_event_id
-      @recurring_event = RecurringEvent.find(@event.recurring_event_id)
-    end
-    @note = Note.new
-  end
-  def queue
-    @events = Event.where(approved: nil).order(start_date: :desc)
-  end
-  def edit
-    @event = Event.find(params[:id])
   end
   def destroy
     @event = Event.find(params[:id])

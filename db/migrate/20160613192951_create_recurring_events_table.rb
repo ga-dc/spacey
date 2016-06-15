@@ -1,7 +1,7 @@
 class CreateRecurringEventsTable < ActiveRecord::Migration
   def change
     create_table :recurring_events do |t|
-      t.hstore   :recurring_rules
+      t.json   :recurring_rules
       t.string   :title
       t.datetime :start_date
       t.datetime :end_date
