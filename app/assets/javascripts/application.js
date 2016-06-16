@@ -18,7 +18,7 @@
 
 $(function(){
   $(".datetimepicker").datetimepicker();
-  $("input[type='color']").on("change", function(e){
+  $("label > input[type='color']").on("change", function(e){
     console.log($(e.target).val())
     $color = $(e.target)
     var id = $color.attr('id')

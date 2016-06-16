@@ -184,7 +184,7 @@
   })
   .attr("height", "40px")
   .style("fill", function(d){
-    return d.color
+    return d.custom_color ? d.custom_color : d.color;
   })
   .attr("x", function(d){
      var m = moment.utc(d.start_date)
