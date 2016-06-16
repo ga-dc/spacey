@@ -12,6 +12,9 @@
   <%= f.label :space_id %>
   <%= f.select :space_id, Space.all.collect{|s| [s.title, s.id] } %>
   <br>
+  <%= f.label :custom_color %>
+  <input type='color' name='event[custom_color]' value='<%= @event.custom_color %>'>
+  <br>
   <%= f.label :event_style %>
   <%= f.select :event_style, ["Class", "Lecture"], selected: "Class" %>
   <br>
