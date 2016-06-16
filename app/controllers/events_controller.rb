@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
   include IceCube
-  
+    
   def index
     @events = Event.all
   end
@@ -47,7 +47,7 @@ class EventsController < ApplicationController
     recurring_event = @event.recurring_event if @event.recurring_event_id
     if params[:update_all]
       Event.update_recurring_events(params, event_params, start_date, end_date, recurring_event)
-      redirect_to root_path
+      go_back
     else 
       if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
         redirect_to "/days/" + @event.start_date.strftime("%F")
@@ -73,7 +73,7 @@ class EventsController < ApplicationController
   def destroy
     @event = Event.find(params[:id])
     @event.destroy
-    redirect_to "/days/" + Time.now.strftime("%F")
+    go_back
   end
   def show_date
     day = params[:date] || Date.today.to_s
@@ -84,6 +84,7 @@ class EventsController < ApplicationController
     @events = Event.by_date(day)
     @year = Date.parse(day).strftime("%Y")
     @week = Date.parse(day).strftime("%W")
+    session[:last_view] = request.original_url
   end
   def show_week
     @year = params[:year].to_i
@@ -94,6 +95,7 @@ class EventsController < ApplicationController
     @next_week = @start_of_week + 1.week
     @events = Event.where("start_date > ? AND end_date < ?", @start_of_week, @end_of_week)
     @spaces = Space.all
+    session[:last_view] = request.original_url
   end
   def check_availability
     start = DateTime.parse(params[:start_date])
@@ -108,5 +110,9 @@ class EventsController < ApplicationController
   private
   def event_params
     params.require(:event).permit(:title, :space_id, :event_type_id, :producer, :approved, :instructor, :number_of_attendees, :start_date, :end_date, :kind, :event_style, :recurring_rules)
+  end
+  def go_back
+    return redirect_to session[:last_view] if session[:last_view]
+    redirect_to :back
   end
 end
