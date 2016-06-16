@@ -1,56 +1,82 @@
-<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js'></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 
 <h2>Today</h2>
 <div class='by-day'>
 </div>
+<br>
+<br>
 <div class='by-week'>
 </div>
 <script>
-  var byDay = <%= @by_day.to_a.to_json.html_safe %>
-  var cont = d3
-    .select(".by-day")
-
-  cont.selectAll("div")
-  .data(byDay)
-  .enter()
-  .append("div")
-  .text(function(d){
-    return d[0] + ": " + (d[1] * 100).toFixed() + "%"
+      var dailyData = (<%= @by_day.to_a.to_json.html_safe %>).map(function(d){
+      var value = parseFloat(parseFloat(d[1] * 100).toFixed(2))
+      return value
   })
-  var byWeek = <%= @by_week.to_a.to_json.html_safe %>
-$(function () {
-    $('.by-week').highcharts({
+var byWeek = <%= @by_week.to_a.to_json.html_safe %>
+ $('.by-day').highcharts({
+        chart: {
+            type: 'column'
+        },
         title: {
-            text: 'This Week',
-            x: -20 //center
+            text: 'Today'
         },
         xAxis: {
-            categories: <%= @sorted_weekdays.to_json.html_safe %>
+	  categories: Object.keys(<%= @by_day.to_json.html_safe %>),
+	  crosshair: true
         },
         yAxis: {
+            min: 0,
             title: {
                 text: 'Utilization %'
-            },
-            plotLines: [{
-                value: 0,
-                width: 1,
-                color: '#808080'
-            }]
+            }
         },
-        tooltip: {
-            valueSuffix: '%'
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
         },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-        },
-        series: byWeek
+        series: [{
+            name: ' ',
+            data: dailyData
+        }],
+	tooltip:{
+	  formatter: function(){
+	    return this.y + "%"
+	  }
+	},
+	legend: {
+	  enabled: false
+	}
     });
+$('.by-week').highcharts({
+    title: {
+	text: 'This Week',
+	x: -20 //center
+    },
+    xAxis: {
+	categories: <%= @sorted_weekdays.to_json.html_safe %>
+    },
+    yAxis: {
+	title: {
+	    text: 'Utilization %'
+	},
+	plotLines: [{
+	    value: 0,
+	    width: 1,
+	    color: '#808080'
+	}]
+    },
+    tooltip: {
+	valueSuffix: '%'
+    },
+    legend: {
+	layout: 'vertical',
+	align: 'right',
+	verticalAlign: 'middle',
+	borderWidth: 0
+    },
+    series: byWeek
 });
-
-
 </script>
