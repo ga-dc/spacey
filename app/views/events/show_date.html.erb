@@ -11,7 +11,7 @@
   .cal{
     border: 1px solid black;
     width:100%;
-    height:550px;
+    height:600px;
     overflow:visible;
   }
   [data-approved="false"]{
@@ -33,7 +33,7 @@
   function offsetX(d){
      var m = moment.utc(d.start_date)
      var hours = parseInt(m.format("H"))
-     var minutes = m.format("m") / 50;
+     var minutes = m.format("m") / 40;
      return scaleX(hours + minutes) +"%"
   }
   function wrap(text, width) {
@@ -93,7 +93,7 @@
   .attr("fill", "#000")
   .style("font-size", "10px")
   .attr("y", function(d, i){
-    return (i * 50) + 30;
+    return (i * 40) + 30;
   })
   .text(function(d){
     return d.title
@@ -110,11 +110,11 @@
   .append("line")
   .attr("x1", 0)
   .attr("y1", function(d, i){
-    return (i * 50);
+    return (i * 40);
   })
   .attr("x2", "100%")
   .attr("y2", function(d, i){
-    return (i * 50);
+    return (i * 40);
   })
   .attr("stroke", "#eee")
   .attr("stroke-width", "1")
@@ -159,7 +159,7 @@
     var spaceIds = spaces.map(function(d){
       return d.id
     })
-    return spaceIds.indexOf(d.space_id) * 50
+    return spaceIds.indexOf(d.space_id) * 40
   })
   .attr("width", function(d){
     var now  = d.start_date;
@@ -169,7 +169,7 @@
     var hs = du.asHours()
     return scaleX(hs + 8) +"%"
   })
-  .attr("height", "50px")
+  .attr("height", "40px")
   .style("fill", function(d){
     return d.color
   })
@@ -195,7 +195,7 @@
     var spaceIds = spaces.map(function(d){
       return d.id
     })
-    return spaceIds.indexOf(d.space_id) * 50
+    return spaceIds.indexOf(d.space_id) * 40
   })
   .attr("width","100%")
   .attr("height","100%")
