@@ -118,4 +118,23 @@ form {
   border-radius: 3px;
   padding: .5em;
   margin: 5px 0;
+  margin: 0 0.5em;
+}
+
+.swatch {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 0.2em 1em;
+  margin: 0 0.5em;
+  font-family: sans-serif;
+  font-size: 0.7em;
+}
+.swatch.start {
+  background-color: #6AA84F;
+}
+.swatch.middle {
+  background-color: #FF9900;
+}
+.swatch.end {
+  background-color: #E06666;
 }
