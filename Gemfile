@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'pry'
 gem 'figaro'
 gem 'omniauth-google-oauth2'
+gem 'cancancan'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.4'
 # Use sqlite3 as the database for Active Record
