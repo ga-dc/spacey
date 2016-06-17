@@ -231,7 +231,7 @@
   .attr("x", function(d){
      var m = moment.utc(d.start_date)
      var dayOfWeek = m.day() - 1;
-     return scaleWeek(dayOfWeek) + "%"
+     return scaleWeek(dayOfWeek) + offsetX(d) + "%"
   })
   .attr("y", function(d, i){
     var spaceIds = spaces.map(function(d){
