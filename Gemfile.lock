@@ -129,6 +129,7 @@ GEM
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
     rack (1.6.4)
+    rack-cors (0.4.0)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.4)
@@ -232,6 +233,7 @@ DEPENDENCIES
   pry
   pry-byebug
   pry-stack_explorer
+  rack-cors
   rails (= 4.2.4)
   recurring_select
   rspec-rails
