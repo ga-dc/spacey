@@ -13,7 +13,7 @@ class EventsController < ApplicationController
   end
   def queue
     @events = Event.where(approved: nil).order(start_date: :desc)
-    authorize! :approve, @events.last
+    authorize! :approve, @events.last || Event.new
   end
   def new
     @event = Event.new
