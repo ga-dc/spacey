@@ -5,7 +5,7 @@ class Event < ActiveRecord::Base
   belongs_to :event_type
   belongs_to :recurring_event
   
-  validate :is_available, :room_capactity
+  validate :is_available, :is_postive_time, :room_capactity
   validates :space_id, :start_date, :end_date, :title, :event_style, presence: true
   
   scope :same_space, -> (space_id){ where('space_id = ?', space_id)}
@@ -38,6 +38,11 @@ class Event < ActiveRecord::Base
       errors.add(:event, "space and time are not available during the date/time you requested." )
     end
   end
+  def is_postive_time
+    if (self.start_date > self.end_date) || (self.start_date == self.end_date)
+      errors.add(:event, "time is not valid, the start must come before the end.")
+    end
+  end
   def room_capactity
     @space = Space.find(self.space_id)
     if self.event_style == 'Lecture'
@@ -50,8 +55,6 @@ class Event < ActiveRecord::Base
       end
     end
   end
-  # TODO need validation for exceeding business hours
-  # TODO need validation for evetns that are 0 hours long
   # TODO validation for recurring events sucks
   # TODO can't update non-recurring event to become recurring
   def self.recurring_helper(params, event_params, start_date, end_date)
@@ -74,7 +77,7 @@ class Event < ActiveRecord::Base
   def self.update_recurring_events(params, event_params, start_date, end_date, recurring_event)
     new_st = start_date
     new_et = end_date
-    if new_st.strftime('%D') == new_et.strftime('%D')
+    if start_date.strftime('%D') == end_date.strftime('%D')
       old_st = recurring_event.start_date.to_datetime
       old_et = recurring_event.end_date.to_datetime
       start_date = DateTime.new(old_st.year, old_st.month, old_st.day, new_st.hour, new_st.minute, new_st.second)
