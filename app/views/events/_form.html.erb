@@ -26,6 +26,7 @@
   <%= f.select :event_type_id, EventType.all.collect{|et| [et.title, et.id] } %>
   <br>
   <% if @recurring_event %>
+    <span id='recurring_event' data='<%= @recurring_event.id %>' style='display: none'>Recurring Event</span>
     <%= f.label :start_date %>
     <input class='datetimepicker' name='event[start_date]' required="true" value="<%= @recurring_event.start_date%>" >
     <br>
@@ -70,41 +71,42 @@
   <% end %>
 <% end %>
 <script type="text/javascript">
-  $("#new_event").on("submit", function(e){
+  var url;
+    
+  $(".new_event").on("submit", function(e){
     e.preventDefault()
-    console.log($("input[name='event[start_date]']").val());
-    var data = {
-      event: {
-        title: $("input#event_title").val(),
-        space_id: $("select#event_space_id").val(),
-        event_type_id: $("select#event_event_type_id").val(),
-        event_style: $("select#event_event_style").val(),
-        start_date: $("input[name='event[start_date]']").val(),
-        end_date: $("input[name='event[end_date]']").val(),
-        custom_color: $("input[name='event[custom_color]']").val(),
-        producer: $("input#event_producer").val(),
-        instructor: $("input#event_instructor").val(),
-        number_of_attendees: $("input#event_number_of_attendees").val(),
-        approved: $("input#event_approved").val(),
-        recurring_rules: $("select#event_recurring_rules").val()
-      }
+    var data = $(".new_event").serialize()
+    
+    if ($("select#event_recurring_rules").val() === "null") {
+      url = window.location.origin + "/events"
+    } else {
+      url = window.location.origin + "/recurring_events"
     }
-    console.log(data)
-
-    // if recurring_rules send to RecuringEvent Controller
-    // create/update?
-      // move code from Event model to RecurringEvent model
-      // -> after create hook to make Events ?
-    // else send to EventContorller
-    // create/update?
-
     $.ajax({
       method: "post",
-      url: window.location.origin + "/events",
+      url: url,
       data: data
     }).done(function(res){
       console.log(res);
-      window.location =
+    }).fail(function(res){
+      console.log(res);
+    })
+  })
+  $(".edit_event").on("submit", function(e){
+    e.preventDefault()
+    var data = $(".edit_event").serialize()
+    
+    if ($("select#event_recurring_rules").val() === "null") {
+      url = window.location.origin + "/events"
+    } else {
+      url = window.location.origin + "/recurring_events/" + $('#recurring_event').attr('data')
+    }
+    $.ajax({
+      method: "put",
+      url: url,
+      data: data
+    }).done(function(res){
+      console.log(res);
     }).fail(function(res){
       console.log(res);
     })
