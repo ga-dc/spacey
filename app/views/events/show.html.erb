@@ -2,8 +2,11 @@
 <p><%= @event.start_date.strftime("%F %H:%M") %> -
   <%= @event.end_date.strftime("%F %H:%M") %></p>
 <p><%= @event.space.title %></p>
-<p><%= @event.event_style %></p>
+<p>Type: <%= @event.event_type.title %></p>
+<p>Event Style: <%= @event.event_style %></p>
 <p>Attendees: <%= @event.number_of_attendees %></p>
+<p>Producer: <%= @event.producer %></p>
+<p>Instructor: <%= @event.instructor %></p>
 <%= link_to "Edit", edit_event_path(@event), class: 'button'%>
 <%= link_to "Delete", event_path(@event), method: :delete, data: {confirm: "Are you sure?"}, class: 'button' %>
 <% if @recurring_event %>
