@@ -137,3 +137,7 @@ form {
 .swatch.end {
   background-color: #E06666;
 }
+
+.cal text{
+  fill: #000;
+}
