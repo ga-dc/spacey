@@ -72,15 +72,40 @@
   .select(".cal")
 
   // x axis
-  svg
+  var xAxis = svg
   .append("g")
   .attr("class","X Axis week")
   .selectAll("text")
   .data(dates)
   .enter()
-  .append("text")
+  .append("g")
+  
+  xAxis
+  .append("rect")
   .attr("x",function(d, i){
     return scaleWeek(i) + "%"
+  })
+  .attr("rx","3")
+  .attr("ry","3")
+  .attr("stroke", "#ccc")
+  .attr("y", "-2.25em")
+  .attr("width", "5em")
+  .attr("height", "1.75em")
+  .attr("dy","-1em")
+  .attr("fill", "#fff")
+  .style("font-size", "10px")
+  .text(function(d){
+    return d.format('dd MM/DD')
+  })
+  .on("click", function(d){
+    var href = "/days/"+ d.format('YYYY-MM-DD')
+    window.location = href
+  })
+
+  xAxis
+  .append("text")
+  .attr("x",function(d, i){
+    return scaleWeek(i)+.5 + "%"
   })
   .attr("dy","-1em")
   .attr("fill", "#000")
@@ -200,14 +225,13 @@
   .on("click", function( ){
     window.location = this.getAttribute("href")
   })
-  .append("title")
 
   square
   .append("text")
   .attr("x", function(d){
      var m = moment.utc(d.start_date)
      var dayOfWeek = m.day() - 1;
-     return scaleWeek(dayOfWeek) + "%"
+     return scaleWeek(dayOfWeek) + offsetX(d) + "%"
   })
   .attr("y", function(d, i){
     var spaceIds = spaces.map(function(d){

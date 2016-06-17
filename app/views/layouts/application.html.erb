@@ -19,7 +19,9 @@
     <br><br>
 <nav>
   <%= link_to "New Event", new_event_path %>
-  <%= link_to "Queue", events_queue_path %>
+  <% if can? :approve, @event %>
+    <%= link_to "Queue", events_queue_path %>
+  <% end %>
   <%= link_to "Today", "/days/" + Time.now.strftime("%F") %>
   <%= link_to "Settings", settings_path %>
   <%= link_to "Utilizations", utilizations_path %>

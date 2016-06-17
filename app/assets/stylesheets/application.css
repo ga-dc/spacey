@@ -62,6 +62,8 @@ nav a {
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: .5em;
+  display:inline-block;
+  margin-bottom:.5em;
 }
 
 .X.week text {
@@ -136,4 +138,12 @@ form {
 }
 .swatch.end {
   background-color: #E06666;
+}
+
+.cal{
+  font-family:Helvetica, sans-serif;
+}
+
+.cal text{
+  fill: #000;
 }

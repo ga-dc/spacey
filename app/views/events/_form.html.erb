@@ -19,7 +19,7 @@
   <span class="swatch end">E</span>
   <br>
   <%= f.label :event_style %>
-  <%= f.select :event_style, ["Class", "Lecture"], selected: "Class" %>
+  <%= f.select :event_style, ["Class", "Lecture", "Other - See Notes"], selected: "Class" %>
   <br>
   <%= f.label :event_type_id %>
   <% kinds = ["Immersive", "Part Time Course", "Info Session", "C&W", "Event", "Alumni", "Internal"]%>
@@ -62,10 +62,12 @@
   <%= f.label :number_of_attendees %>
   <%= f.number_field :number_of_attendees %>
   <br>
+  <% if can? :approve, @event %>
   <%= f.label :approved %>
   <%= f.check_box :approved %>
   <br>
-  <%= f.submit class:'test' %>
+  <% end %>
+  <%= f.submit %>
   <% if @recurring_event %>
   <%= f.submit :"Update all", name: 'update_all', data: {confirm: "Are you sure? This will change all events in the series."} %>
   <% end %>
