@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160616184319) do
+ActiveRecord::Schema.define(version: 20160616215531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20160616184319) do
     t.integer  "event_type_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.string   "custom_color"
   end
 
   add_index "recurring_events", ["event_type_id"], name: "index_recurring_events_on_event_type_id", using: :btree
