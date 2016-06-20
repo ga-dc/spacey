@@ -1,19 +1,18 @@
 class RecurringEventsController < ApplicationController
   include IceCube
-  attr_accessor :recurring_rules
       
   def create
     start_date, end_date, sched = recurring_info(params)
-    binding.pry
-    RecurringEvent.create!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
+    recurring_event = RecurringEvent.create!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
     
-    render json: {"action": "create"}
+    render :js => "window.location = '/days/#{recurring_event.start_date.strftime("%F")}'"
   end
   def update
     start_date, end_date, sched = recurring_info(params)
+    recurring_event = RecurringEvent.find(params[:id])
     recurring_event.update!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
     
-    render json: {"action": "update"}
+    render :js => "window.location = '/days/#{recurring_event.start_date.strftime("%F")}'"
   end
   def destroy
     @recurring_event = RecurringEvent.find(params[:id])

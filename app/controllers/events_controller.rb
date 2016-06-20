@@ -46,20 +46,19 @@ class EventsController < ApplicationController
     end_date = DateTime.parse(params[:event][:end_date])
     @event = Event.find(params[:id])
     recurring_event = @event.recurring_event if @event.recurring_event_id
-    @recurring_event = recurring_event
-      if (start_date.day != recurring_event.start_date.day) || (end_date.day != recurring_event.end_date.day)
-        @event.errors.add(:event, "date can't be changed when updating one instance of a recurring event.")
-        render "edit"
+    if (start_date.day != recurring_event.start_date.day) || (end_date.day != recurring_event.end_date.day)
+      @event.errors.add(:event, "date can't be changed when updating one instance of a recurring event.")
+      # TODO Error not being sent
+      render :js => "window.location = '/events/#{@event.id}/edit'"
+    else
+      start_date = start_date.change(day: @event.start_date.day)
+      end_date = end_date.change(day: @event.end_date.day)
+      if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
+        render :js => "window.location = '/days/#{@event.start_date.strftime("%F")}'"
       else
-        start_date = start_date.change(day: @event.start_date.day)
-        end_date = end_date.change(day: @event.end_date.day)
-        if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
-          redirect_to "/days/" + @event.start_date.strftime("%F")
-        else
-          render "edit"
-        end
+        render :js => "window.location = '/events/#{@event.id}/edit'"
       end
-    # end
+    end
   end
   def update_approval
     # TODO bulk approval for recurring_events

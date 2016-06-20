@@ -6,6 +6,7 @@
   <% end %>
 <% end %>
 <%= form_for @event do |f| %>
+  <span id='event' data='<%= @event.id %>' style='display: none'>Event</span>
   <%= f.label :title %>
   <%= f.text_field :title, required: true %>
   <br>
@@ -77,13 +78,14 @@
     
   $(".new_event").on("submit", function(e){
     e.preventDefault()
-    var data = $(".new_event").serialize()
+    var data = $(this).serialize()
     
     if ($("select#event_recurring_rules").val() === "null") {
       url = window.location.origin + "/events"
     } else {
       url = window.location.origin + "/recurring_events"
     }
+    console.log(url);
     $.ajax({
       method: "post",
       url: url,
@@ -95,16 +97,18 @@
     })
   })
   
-  // TODO turn into a function to dry up more, switch/case for url?
+  // TODO turn into a function to dry up more, switch/case for url & method?
   $(".edit_event").on("submit", function(e){
     e.preventDefault()
-    var data = $(".edit_event").serialize()
+    var data = $(this).serialize()
+    console.log(data);
     
-    if ($("select#event_recurring_rules").val() === "null") {
-      url = window.location.origin + "/events"
+    if ($(document.activeElement).val() == "Update Event") {
+      url = window.location.origin + "/events/" + $('#event').attr('data')
     } else {
       url = window.location.origin + "/recurring_events/" + $('#recurring_event').attr('data')
     }
+    console.log(url);
     $.ajax({
       method: "put",
       url: url,

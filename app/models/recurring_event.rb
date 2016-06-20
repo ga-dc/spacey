@@ -5,9 +5,9 @@ class RecurringEvent < ActiveRecord::Base
   
   validates :space_id, :start_date, :end_date, :title, :event_style, :recurring_rules, presence: true
   after_create :create_events
+  after_update :update_events
   
   include IceCube
-  attr_accessor :recurring_rules
   
   def create_events
     sched = Schedule.from_hash(self.recurring_rules)
