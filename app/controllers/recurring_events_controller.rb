@@ -1,31 +1,37 @@
 class RecurringEventsController < ApplicationController
+  include IceCube
+  attr_accessor :recurring_rules
+      
   def create
-    dur_in_sec, sched, occurrences = RecurringEvent.recurring_helper(rrules, event_params, start_date, end_date)
-    rec = RecurringEvent.create!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
-    occurrences.each do |occurrence|
-      rec.events.create!(event_params.merge(start_date: occurrence, end_date: occurrence + dur_in_sec.seconds))
-    end
+    start_date, end_date, sched = recurring_info(params)
+    binding.pry
+    RecurringEvent.create!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
+    
     render json: {"action": "create"}
   end
   def update
+    start_date, end_date, sched = recurring_info(params)
     recurring_event.update!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
+    
     render json: {"action": "update"}
-    if start_date.strftime('%D') == end_date.strftime('%D')
-      old_st = recurring_event.start_date.to_datetime
-      old_et = recurring_event.end_date.to_datetime
-      start_date = DateTime.new(old_st.year, old_st.month, old_st.day, start_date.hour, start_date.minute, start_date.second)
-      end_date = DateTime.new(old_et.year, old_et.month, old_et.day, end_date.hour, end_date.minute, end_date.second)
-    end
-    dur_in_sec, sched, occurrences = RecurringEvent.recurring_helper(rrules, event_params, start_date, end_date)
-    recurring_event.update!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
-    recurring_event.events.destroy_all
-    occurrences.each do |occurrence|
-      recurring_event.events.create!(event_params.merge(start_date: occurrence, end_date: occurrence + dur_in_sec.seconds))
-    end
   end
   def destroy
     @recurring_event = RecurringEvent.find(params[:id])
     @recurring_event.destroy
     redirect_to root_path
+  end
+  
+  private
+  def event_params
+    params.require(:event).permit(:title, :space_id, :event_type_id, :producer, :approved, :instructor, :number_of_attendees, :start_date, :end_date, :kind, :event_style, :recurring_rules, :custom_color)
+  end
+  def recurring_info(params)
+    start_date = DateTime.parse(params[:event][:start_date])
+    end_date = DateTime.parse(params[:event][:end_date])
+    rec_rules  = RecurringSelect.dirty_hash_to_rule(params['event']['recurring_rules'])
+    total_dur = (end_date.strftime("%s").to_i - start_date.strftime("%s").to_i)
+    sched = Schedule.new(start_date, :duration => total_dur)
+    sched.add_recurrence_rule(rec_rules)
+    return [start_date, end_date, sched]
   end
 end
