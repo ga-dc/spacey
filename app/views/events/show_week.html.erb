@@ -28,7 +28,7 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js'></script>
 <script>
   var spaces = <%= @spaces.to_json.html_safe %>;
-  var data = <%= @events.to_json.html_safe %>;
+  var data = <%= @events.to_json(include: :notes).html_safe %>;
   var scaleX = d3.scale.linear().domain([8,22]).range([0,100])
   function offsetX(d){
      var m = moment.utc(d.start_date)
@@ -177,6 +177,7 @@
       +"<p>Producer: "+ d.producer +"</p>"
       +"<p>Instructor: "+ d.instructor +"</p>"
       +"<p>Attendees: "+ d.number_of_attendees +"</p>"
+      d.notes.forEach(function(n){ el += "<li>"+ n.text +"</li>"})
       return el
     })
     .style("visibility", "visible");

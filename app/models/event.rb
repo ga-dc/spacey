@@ -11,6 +11,7 @@ class Event < ActiveRecord::Base
   scope :same_space, -> (space_id){ where('space_id = ?', space_id)}
   scope :diff_event, -> (event_id){ where('id != ?', event_id)}
   scope :overlaping, -> (start, endd){ where('(? <= end_date AND ? >= start_date)', start, endd)}
+  scope :by_date, -> (day){ where(start_date: day.beginning_of_day..day.end_of_day)}
   
   include IceCube
   attr_accessor :recurring_rules
@@ -21,9 +22,6 @@ class Event < ActiveRecord::Base
     days.each do |d|
       current_day += 1
     end
-  end
-  def self.by_date day
-    all.select{|e| e.start_date.strftime("%F") == day }
   end
   def as_json(options = { })
       h = super(options)

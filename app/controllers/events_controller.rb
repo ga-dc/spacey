@@ -86,14 +86,16 @@ class EventsController < ApplicationController
   end
   def show_date
     day = params[:date] || Date.today.to_s
-    @today = Date.parse(day).strftime("%A, %b %e, %Y")
+    @day = Date.parse(day)
+    @today = @day.strftime("%A, %b %e, %Y")
     @yesterday = (Date.parse(day) - 1.day).strftime("%F")
     @tomorrow = (Date.parse(day) + 1.day).strftime("%F")
     @spaces = Space.all
-    @events = Event.by_date(day)
+    @events = Event.by_date(@day)
     @year = Date.parse(day).strftime("%Y")
     @week = Date.parse(day).strftime("%W")
     session[:last_view] = request.original_url
+    # binding.pry
   end
   def show_week
     @year = params[:year].to_i
