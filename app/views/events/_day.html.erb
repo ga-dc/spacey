@@ -1,5 +1,5 @@
+<h2>&nbsp;<%= @today %>&nbsp;</h2>
 <%= link_to "&laquo; Yesterday".html_safe, show_date_path(@yesterday, request.query_parameters), class: 'button' %>
-&nbsp;<%= @today %>&nbsp;
 <%= link_to "Tomorrow &raquo;".html_safe, show_date_path(@tomorrow, request.query_parameters), class: 'button' %>
 <br>
 <style>

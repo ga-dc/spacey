@@ -1,4 +1,7 @@
-<div>
+<h2>&nbsp;<%= @today %>&nbsp;</h2>
+<%= link_to "&laquo; Yesterday".html_safe, show_date_path(@yesterday, request.query_parameters), class: 'button' %>
+<%= link_to "Tomorrow &raquo;".html_safe, show_date_path(@tomorrow, request.query_parameters), class: 'button' %>
+<div class='wrap'>
  <% @events.each do |event| %> 
    <div class='event' data-color="<%= event.color %>">
      <%= link_to event do %>

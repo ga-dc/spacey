@@ -61,7 +61,7 @@
   var scaleWeek = d3.scale.linear().domain([0,7]).range([0,100])
   // create array of momment objects of dates from empty array
   var dates = new Array(7).fill('').map(function(el, i){
-    var m = moment('<%= @start_of_week %>')
+    var m = moment('<%= @day.beginning_of_week%>')
     var d = m.add(i, 'days')
     return d;
   })
