@@ -115,6 +115,14 @@ form {
   padding: .5em;
 }
 
+.button.active{
+  background:#eee;
+}
+
+.right{
+  float:right;
+}
+
 .queue_item {
   border: 1px solid #ccc;
   border-radius: 3px;
@@ -147,3 +155,14 @@ form {
 .cal text{
   fill: #000;
 }
+
+.event {
+  margin-bottom:.5em;
+}
+.event .dot{
+  height:.75em;
+  width:.75em;
+  display:inline-block;
+  border-radius:50%;
+}
+

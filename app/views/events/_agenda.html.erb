@@ -1,0 +1,10 @@
+<div>
+ <% @events.each do |event| %> 
+   <div class='event' data-color="<%= event.color %>">
+     <%= link_to event do %>
+       <span class='dot' style="background: <%= event.color %>"></span>
+       <span><%= event.title %><span><small> (<%= event.space.title %> @ <%= event.start_date.strftime("%l%p") %>)</small>
+     <% end %>
+   </div>
+ <% end %>
+</div>

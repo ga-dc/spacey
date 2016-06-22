@@ -51,7 +51,7 @@ class EventsController < ApplicationController
       Event.update_recurring_events(params, event_params, start_date, end_date, recurring_event)
       go_back
     else 
-      if (start_date.day != recurring_event.start_date.day) || (end_date.day != recurring_event.end_date.day)
+      if recurring_event && ((start_date.day != recurring_event.start_date.day) || (end_date.day != recurring_event.end_date.day))
         @event.errors.add(:event, "date can't be changed when updating one instance of a recurring event.")
         render "edit"
       else
@@ -94,18 +94,9 @@ class EventsController < ApplicationController
     @events = Event.by_date(@day)
     @year = Date.parse(day).strftime("%Y")
     @week = Date.parse(day).strftime("%W")
-    session[:last_view] = request.original_url
-    # binding.pry
-  end
-  def show_week
-    @year = params[:year].to_i
-    week = params[:number].to_i
-    @start_of_week = Date.commercial(@year, week, 1)
-    @end_of_week = Date.commercial(@year, week, 7)
-    @prev_week = @start_of_week - 1.week
-    @next_week = @start_of_week + 1.week
-    @events = Event.where("start_date > ? AND end_date < ?", @start_of_week, @end_of_week)
-    @spaces = Space.all
+    if params[:view] == "week"
+      @events = Event.where("start_date > ? AND end_date < ?", @day.beginning_of_week, @day.end_of_week)
+    end
     session[:last_view] = request.original_url
   end
   def check_availability

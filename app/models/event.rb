@@ -88,4 +88,7 @@ class Event < ActiveRecord::Base
       recurring_event.events.create!(event_params.merge(start_date: occurrence, end_date: occurrence + dur_in_sec.seconds))
     end
   end
+  def color
+    self.custom_color || self.event_type.color
+  end
 end
