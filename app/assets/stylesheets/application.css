@@ -127,6 +127,12 @@ form {
   float:right;
 }
 
+@media(max-width:40em){
+  .right{
+    float:none;
+  }
+}
+
 .queue_item {
   border: 1px solid #ccc;
   border-radius: 3px;
@@ -170,20 +176,23 @@ form {
   border-radius:50%;
 }
 
-  .wrap{
-    padding-left:4em;
-    padding-top:2em;
-  }
-  .cal{
-    border: 1px solid black;
-    width:100%;
-    height:600px;
-    overflow:visible;
-  }
-  [data-approved="false"]{
-    opacity: .5;
-    stroke: #000;
-    fill: none;
-    stroke-dasharray: 5,5;
-    stroke-width: 2;
-  }
+.wrap{
+  padding-left:4em;
+  padding-top:2em;
+}
+.wrap.agenda{
+  padding-left:0;
+}
+.cal{
+  border: 1px solid black;
+  width:100%;
+  height:600px;
+  overflow:visible;
+}
+[data-approved="false"]{
+  opacity: .5;
+  stroke: #000;
+  fill: none;
+  stroke-dasharray: 5,5;
+  stroke-width: 2;
+}
