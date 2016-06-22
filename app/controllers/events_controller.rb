@@ -91,7 +91,7 @@ class EventsController < ApplicationController
     @yesterday = (Date.parse(day) - 1.day).strftime("%F")
     @tomorrow = (Date.parse(day) + 1.day).strftime("%F")
     @spaces = Space.all
-    @events = Event.by_date(@day)
+    @events = Event.by_date(@day).order('start_date ASC')
     @year = Date.parse(day).strftime("%Y")
     @week = Date.parse(day).strftime("%W")
     if params[:view] == "week"

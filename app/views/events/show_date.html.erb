@@ -1,7 +1,7 @@
 
 
 <div class='right'>
-  <a class='button <%="active" if params[:view]=="day" %>' href='<%= show_date_path(@day.strftime("%F"), request.query_parameters.merge(view: 'day'))%>'>
+  <a class='button <%="active" if params[:view]=="day" || params[:view] == nil %>' href='<%= show_date_path(@day.strftime("%F"), request.query_parameters.merge(view: 'day'))%>'>
     Day
   </a>
   <a class='button <%="active" if params[:view]=="week" %>' href='<%= show_date_path(@day.strftime("%F"), request.query_parameters.merge(view: 'week'))%>'>
