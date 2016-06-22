@@ -15,6 +15,10 @@
  *= require recurring_select
  */
 
+body{
+  color:#444;
+}
+
 table, tr, td, th{
   border: 1px solid #ccc;
   border-collapse:collapse;

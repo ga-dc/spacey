@@ -4,6 +4,7 @@
   <title>Spacey</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application'%>
+  <link rel='stylesheet' type='text/css' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'>
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -18,13 +19,21 @@
     <%= link_to "Logout #{current_user.name}", logout_path %>
     <br><br>
 <nav>
-  <%= link_to "New Event", new_event_path %>
+  <%= link_to new_event_path do %>
+    <span class='fa fa-plus'></span> New Event
+  <% end %>
   <% if can? :approve, @event %>
     <%= link_to "Queue", events_queue_path %>
   <% end %>
-  <%= link_to "Today", show_date_path(Time.now.strftime("%F"),request.query_parameters) %>
-  <%= link_to "Settings", settings_path %>
-  <%= link_to "Utilizations", utilizations_path %>
+  <%= link_to  show_date_path(Time.now.strftime("%F"),request.query_parameters) do %>
+    <span class='fa fa-clock-o'></span> Today
+  <% end %>
+  <%= link_to settings_path do%>
+    <span class='fa fa-cog'></span> Settings
+  <% end %>
+  <%= link_to utilizations_path do %>
+    <span class='fa fa-line-chart'></span> Utilizations
+  <% end %>
 </nav>
 <br>
 
