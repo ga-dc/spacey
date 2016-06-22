@@ -1,12 +1,12 @@
 <h2>&nbsp;<%= @today %>&nbsp;</h2>
 <%= link_to "&laquo; Yesterday".html_safe, show_date_path(@yesterday, request.query_parameters), class: 'button' %>
 <%= link_to "Tomorrow &raquo;".html_safe, show_date_path(@tomorrow, request.query_parameters), class: 'button' %>
-<div class='wrap'>
+<div class='wrap agenda'>
  <% @events.each do |event| %> 
    <div class='event' data-color="<%= event.color %>">
      <%= link_to event do %>
        <span class='dot' style="background: <%= event.color %>"></span>
-       <span><%= event.title %><span><small> (<%= event.space.title %> @ <%= event.start_date.strftime("%l%p") %>)</small>
+       <span><%= event.title %><span><small> (<%= event.space.title %> @ <%= event.start_date.strftime("%l%p") %> - <%= event.end_date.strftime("%l%p") %>)</small>
      <% end %>
    </div>
  <% end %>
