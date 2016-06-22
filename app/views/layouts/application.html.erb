@@ -22,7 +22,7 @@
   <% if can? :approve, @event %>
     <%= link_to "Queue", events_queue_path %>
   <% end %>
-  <%= link_to "Today", "/days/" + Time.now.strftime("%F") %>
+  <%= link_to "Today", show_date_path("/days/" + Time.now.strftime("%F"),request.query_parameters) %>
   <%= link_to "Settings", settings_path %>
   <%= link_to "Utilizations", utilizations_path %>
 </nav>
