@@ -1,10 +1,25 @@
 class UtilizationsController < ApplicationController
   def index
-    @by_day = by_day Date.today
-    @by_week = by_week Date.today
+    today = Date.today
+    @by_day = by_day today
+    @by_event_type = by_event_type today
+    @by_week = by_week today
     weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-    today_index = DateTime.now.wday
+    today_index = today.wday
     @sorted_weekdays = weekdays.rotate(today_index - 1)
+  end
+
+  def by_event_type(datetime)
+    @utils = {}
+    EventType.all.each do |event_type|
+      hours_filled = 0
+      events = event_type.events.where("start_date > ? AND end_date < ?", datetime - 30.days, datetime + 3.days)
+      events.each do |event|
+        hours_filled += ((event.end_date - event.start_date) / 1.hour).round
+      end
+      @utils[event_type.title] = (hours_filled.to_f / 720.to_f).round(2)
+    end
+    @utils
   end
 
   def by_day datetime

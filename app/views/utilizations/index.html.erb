@@ -8,11 +8,19 @@
 <br>
 <div class='by-week'>
 </div>
+<br>
+<br>
+<div class='by-event-type'>
+</div>
 <script>
-      var dailyData = (<%= @by_day.to_a.to_json.html_safe %>).map(function(d){
-      var value = parseFloat(parseFloat(d[1] * 100).toFixed(2))
-      return value
-  })
+var dailyData = (<%= @by_day.to_a.to_json.html_safe %>).map(function(d){
+  var value = parseFloat(parseFloat(d[1] * 100).toFixed(2))
+  return value
+})
+var eventTypeData = (<%= @by_event_type.to_a.to_json.html_safe %>).map(function(d){
+  var value = parseFloat(parseFloat(d[1] * 100).toFixed(2))
+  return value
+})
 var byWeek = <%= @by_week.to_a.to_json.html_safe %>
  $('.by-day').highcharts({
         chart: {
@@ -79,4 +87,43 @@ $('.by-week').highcharts({
     },
     series: byWeek
 });
+$('.by-event-type').highcharts({
+       chart: {
+           type: 'column'
+       },
+       title: {
+           text: 'By Event Type'
+       },
+       subtitle: {
+         text: 'Last 30 Days'
+       },
+       xAxis: {
+   categories: Object.keys(<%= @by_event_type.to_json.html_safe %>),
+   crosshair: true
+       },
+       yAxis: {
+           min: 0,
+           title: {
+               text: 'Utilization %'
+           }
+       },
+       plotOptions: {
+           column: {
+               pointPadding: 0.2,
+               borderWidth: 0
+           }
+       },
+       series: [{
+           name: ' ',
+           data: eventTypeData
+       }],
+ tooltip:{
+   formatter: function(){
+     return this.y + "%"
+   }
+ },
+ legend: {
+   enabled: false
+ }
+   });
 </script>
