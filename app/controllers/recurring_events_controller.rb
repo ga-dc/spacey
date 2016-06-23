@@ -3,16 +3,26 @@ class RecurringEventsController < ApplicationController
       
   def create
     start_date, end_date, sched = recurring_info(params)
-    recurring_event = RecurringEvent.create!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
-    
-    render :js => "window.location = '/days/#{recurring_event.start_date.strftime("%F")}'"
+    if recurring_event = RecurringEvent.create!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
+      respond_to do |format|
+        format.html { redirect_to show_date_path(@event.start_date.strftime("%F")) }
+        format.json { render json: recurring_event }
+      end
+    else
+      render :js => "alert('Something went wrong. Check the details and try again.')"  
+    end  
   end
   def update
     start_date, end_date, sched = recurring_info(params)
     recurring_event = RecurringEvent.find(params[:id])
-    recurring_event.update!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
-    
-    render :js => "window.location = '/days/#{recurring_event.start_date.strftime("%F")}'"
+    if recurring_event.update!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
+      respond_to do |format|
+        format.html { redirect_to show_date_path(@event.start_date.strftime("%F")) }
+        format.json { render json: recurring_event }
+      end
+    else
+      render :js => "alert('Something went wrong. Check the details and try again.')"  
+    end  
   end
   def destroy
     @recurring_event = RecurringEvent.find(params[:id])

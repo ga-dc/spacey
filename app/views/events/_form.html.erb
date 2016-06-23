@@ -35,7 +35,8 @@
   <% unless @recurring_event %>
   <%= f.label :recurring_rules, "Recurring?" %>
   <%= f.select_recurring :recurring_rules, [
-    IceCube::Rule.daily,
+    IceCube::Rule.weekly.day(:monday, :wednesday),
+    IceCube::Rule.weekly.day(:tuesday, :thursday),
     IceCube::Rule.weekly.day(:monday, :tuesday, :wednesday, :thursday, :friday)
     ], :allow_blank => true %>
   <br>
@@ -64,18 +65,20 @@
     var data = $(this).serialize()
     
     if ($("select#event_recurring_rules").val() === "null") {
-      url = window.location.origin + "/events"
+      url = "/events"  + ".json"
     } else {
-      url = window.location.origin + "/recurring_events"
+      url = "/recurring_events"  + ".json"
     }
     $.ajax({
       method: "post",
       url: url,
       data: data
     }).done(function(res){
-      console.log(res);
+      console.log("Response:", res);
+      var d = moment(res.start_date).format("YYYY-MM-DD")
+      window.location = "/days/"+ d
     }).fail(function(res){
-      console.log(res);
+      console.log("Response:", res);
     })
   })
   
@@ -85,16 +88,19 @@
     var data = $(this).serialize()
     
     if ($(document.activeElement).val() == "Update Event") {
-      url = window.location.origin + "/events/" + $('#event').attr('data')
+      url =  "/events/" + $('#event').attr('data') + ".json"
     } 
+    console.log(url);
     $.ajax({
       method: "put",
       url: url,
       data: data
     }).done(function(res){
-      console.log(res);
+      console.log("Response:", res);
+      var d = moment(res.start_date).format("YYYY-MM-DD")
+      window.location = "/days/"+ d
     }).fail(function(res){
-      console.log(res);
+      console.log("Response:", res);
     })
   })
 </script>
