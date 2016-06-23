@@ -27,9 +27,12 @@ class EventsController < ApplicationController
     else
       @event = Event.new(event_params.merge(start_date: start_date, end_date: end_date))
       if @event.save
-        redirect_to "/days/" + @event.start_date.strftime("%F")
+        respond_to do |format|
+          format.html { redirect_to show_date_path(@event.start_date.strftime("%F")) }
+          format.json { render json: @event }
+        end
       else
-        render "new"
+        render :js => "alert('Something went wrong. Check the details and try again.')"      
       end
     end
   end
@@ -47,22 +50,15 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     recurring_event = @event.recurring_event if @event.recurring_event_id
     @recurring_event = recurring_event
-    if params[:update_all]
-      Event.update_recurring_events(params, event_params, start_date, end_date, recurring_event)
-      go_back
-    else 
-      if recurring_event && ((start_date.day != recurring_event.start_date.day) || (end_date.day != recurring_event.end_date.day))
-        @event.errors.add(:event, "date can't be changed when updating one instance of a recurring event.")
-        render "edit"
-      else
-        start_date = start_date.change(day: @event.start_date.day)
-        end_date = end_date.change(day: @event.end_date.day)
-        if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
-          redirect_to "/days/" + @event.start_date.strftime("%F")
-        else
-          render "edit"
-        end
+    start_date = start_date.change(day: @event.start_date.day)
+    end_date = end_date.change(day: @event.end_date.day)
+    if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
+      respond_to do |format|
+        format.html { redirect_to show_date_path(@event.start_date.strftime("%F")) }
+        format.json { render json: @event }
       end
+    else
+      render :js => "alert('Something went wrong. Check the details and try again.')"
     end
   end
   def update_approval
