@@ -46,18 +46,16 @@ class EventsController < ApplicationController
     end_date = DateTime.parse(params[:event][:end_date])
     @event = Event.find(params[:id])
     recurring_event = @event.recurring_event if @event.recurring_event_id
-    if (start_date.day != recurring_event.start_date.day) || (end_date.day != recurring_event.end_date.day)
-      @event.errors.add(:event, "date can't be changed when updating one instance of a recurring event.")
-      # TODO Error not being sent
-      render :js => "window.location = '/events/#{@event.id}/edit'"
+    @recurring_event = recurring_event
+    
+    start_date = start_date.change(day: @event.start_date.day)
+    end_date = end_date.change(day: @event.end_date.day)
+    if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
+      render :js => "window.location = '/days/#{@event.start_date.strftime("%F")}'"
     else
-      start_date = start_date.change(day: @event.start_date.day)
-      end_date = end_date.change(day: @event.end_date.day)
-      if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
-        render :js => "window.location = '/days/#{@event.start_date.strftime("%F")}'"
-      else
-        render :js => "window.location = '/events/#{@event.id}/edit'"
-      end
+      binding.pry
+      render :js => "alert('this space is not available')"
+      # render :js => "window.location = '/events/#{@event.id}/edit'"
     end
   end
   def update_approval
@@ -81,24 +79,17 @@ class EventsController < ApplicationController
   end
   def show_date
     day = params[:date] || Date.today.to_s
-    @today = Date.parse(day).strftime("%A, %b %e, %Y")
+    @day = Date.parse(day)
+    @today = @day.strftime("%A, %b %e, %Y")
     @yesterday = (Date.parse(day) - 1.day).strftime("%F")
     @tomorrow = (Date.parse(day) + 1.day).strftime("%F")
     @spaces = Space.all
-    @events = Event.by_date(day)
+    @events = Event.by_date(@day).order('start_date ASC')
     @year = Date.parse(day).strftime("%Y")
     @week = Date.parse(day).strftime("%W")
-    session[:last_view] = request.original_url
-  end
-  def show_week
-    @year = params[:year].to_i
-    week = params[:number].to_i
-    @start_of_week = Date.commercial(@year, week, 1)
-    @end_of_week = Date.commercial(@year, week, 7)
-    @prev_week = @start_of_week - 1.week
-    @next_week = @start_of_week + 1.week
-    @events = Event.where("start_date > ? AND end_date < ?", @start_of_week, @end_of_week)
-    @spaces = Space.all
+    if params[:view] == "week"
+      @events = Event.where("start_date > ? AND end_date < ?", @day.beginning_of_week, @day.end_of_week)
+    end
     session[:last_view] = request.original_url
   end
   def check_availability

@@ -26,34 +26,20 @@
   <% kinds = ["Immersive", "Part Time Course", "Info Session", "C&W", "Event", "Alumni", "Internal"]%>
   <%= f.select :event_type_id, EventType.all.collect{|et| [et.title, et.id] } %>
   <br>
-  <% if @recurring_event %>
-    <span id='recurring_event' data='<%= @recurring_event.id %>' style='display: none'>Recurring Event</span>
-    <%= f.label :start_date %>
-    <input class='datetimepicker' name='event[start_date]' required="true" value="<%= @recurring_event.start_date%>" >
-    <br>
-    <%= f.label :end_date %>
-    <input class='datetimepicker' name='event[end_date]' required="true" value="<%=@recurring_event.end_date %>">
-    <br>
-    <%= f.label :recurring_rules, "Recurring?" %>
-    <%= f.select_recurring :recurring_rules, [
-      IceCube::Schedule.from_hash(@recurring_event.recurring_rules).recurrence_rules[0],
-      IceCube::Rule.daily,
-      IceCube::Rule.weekly.day(:monday, :tuesday, :wednesday, :thursday, :friday)
-      ] %>
-  <% else %>
-    <%= f.label :start_date %>
-    <input class='datetimepicker' name='event[start_date]' required="true" value="<%= @event.start_date%>" >
-    <br>
-    <%= f.label :end_date %>
-    <input class='datetimepicker' name='event[end_date]' required="true" value="<%=@event.end_date %>">
-    <br>
-    <%= f.label :recurring_rules, "Recurring?" %>
-    <%= f.select_recurring :recurring_rules, [
-      IceCube::Rule.daily,
-      IceCube::Rule.weekly.day(:monday, :tuesday, :wednesday, :thursday, :friday)
-      ], :allow_blank => true %>
-  <% end %>
+  <%= f.label :start_date %>
+  <input class='datetimepicker' name='event[start_date]' required="true" value="<%= @event.start_date%>" >
   <br>
+  <%= f.label :end_date %>
+  <input class='datetimepicker' name='event[end_date]' required="true" value="<%=@event.end_date %>">
+  <br>
+  <% unless @recurring_event %>
+  <%= f.label :recurring_rules, "Recurring?" %>
+  <%= f.select_recurring :recurring_rules, [
+    IceCube::Rule.daily,
+    IceCube::Rule.weekly.day(:monday, :tuesday, :wednesday, :thursday, :friday)
+    ], :allow_blank => true %>
+  <br>
+  <% end %>
   <%= f.label :producer %>
   <%= f.text_field :producer %>
   <br>
@@ -69,9 +55,6 @@
   <br>
   <% end %>
   <%= f.submit %>
-  <% if @recurring_event %>
-  <%= f.submit :"Update all", name: 'update_all', data: {confirm: "Are you sure? This will change all events in the series."} %>
-  <% end %>
 <% end %>
 <script type="text/javascript">
   var url;
@@ -85,7 +68,6 @@
     } else {
       url = window.location.origin + "/recurring_events"
     }
-    console.log(url);
     $.ajax({
       method: "post",
       url: url,
@@ -101,14 +83,10 @@
   $(".edit_event").on("submit", function(e){
     e.preventDefault()
     var data = $(this).serialize()
-    console.log(data);
     
     if ($(document.activeElement).val() == "Update Event") {
       url = window.location.origin + "/events/" + $('#event').attr('data')
-    } else {
-      url = window.location.origin + "/recurring_events/" + $('#recurring_event').attr('data')
-    }
-    console.log(url);
+    } 
     $.ajax({
       method: "put",
       url: url,

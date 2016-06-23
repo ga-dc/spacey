@@ -1,0 +1,5 @@
+<h2>Edit Note</h2>
+<%= form_for [@event, @note] do |f| %>
+  <%= f.text_area :text %>
+  <%= f.submit %>
+<% end %>

@@ -1,0 +1,142 @@
+<script>
+  // y axis
+  svg
+  .append("g")
+  .attr("class","Y Axis")
+  .selectAll("text")
+  .data(spaces)
+  .enter()
+  .append("text")
+  .attr("dx", "-60")
+  .attr("dy","-1em")
+  .attr("fill", "#000")
+  .style("font-size", "10px")
+  .attr("y", function(d, i){
+    return (i * rowHeight) + 30;
+  })
+  .text(function(d){
+    return d.title
+  })
+  .call(wrap, 60)
+  .selectAll(".Y tspan")
+  .attr("dx", "-7em")
+
+  // y lines
+  svg.append("g")
+  .selectAll("line")
+  .data(spaces)
+  .enter()
+  .append("line")
+  .attr("x1", 0)
+  .attr("y1", function(d, i){
+    return (i * rowHeight);
+  })
+  .attr("x2", "100%")
+  .attr("y2", function(d, i){
+    return (i * rowHeight);
+  })
+  .attr("stroke", "#eee")
+  .attr("stroke-width", "1")
+
+  var tooltip = d3
+  .select("body")
+	.append("div")
+  .attr('class', 'd3-tip')
+
+  var square = d3
+  .select(".cal")
+  .selectAll(".events")
+  .data(data)
+  .enter()
+  .append("g")
+  .attr("class","events")
+  .on("mouseover", function(d){
+    tooltip
+    .html(function(){
+      var el = "<p>"+ d.title +"</p>"
+      +"<p>"+ moment.utc(d.start_date).format("h:mma") + " - " + moment.utc(d.end_date).format("h:mma") +"</p>"
+      +"<p>Producer: "+ d.producer +"</p>"
+      +"<p>Instructor: "+ d.instructor +"</p>"
+      +"<p>Attendees: "+ d.number_of_attendees +"</p>"
+      d.notes.forEach(function(n){ el += "<li>"+ n.text +"</li>"})
+      return el
+    })
+    .style("visibility", "visible");
+    return tooltip;
+  })
+  .on("mousemove", function(){
+    return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");
+  })
+  .on("mouseout", function(){
+    return tooltip.style("visibility", "hidden");
+  });
+
+  square.append("rect")
+  .text(function(d){
+    return d.id
+  })
+  .attr("y", function(d, i){
+    var spaceIds = spaces.map(function(d){
+      return d.id
+    })
+    return spaceIds.indexOf(d.space_id) * rowHeight
+  })
+  .attr("width", squareWidth)
+  .attr("height", rowHeight)
+  .style("fill", function(d){
+    return d.custom_color ? d.custom_color : d.color;
+  })
+  .attr("x", offsetX)
+  .attr("data-approved", function(d){
+    return d.approved ? "" + d.approved : "false"
+  })
+  .attr("href", function(d){
+    return "/events/" + d.id
+  })
+  .on("click", function( ){
+    window.location = this.getAttribute("href")
+  })
+
+  square
+  .append("text")
+  .attr("x", offsetX)
+  .attr("y", function(d, i){
+    var spaceIds = spaces.map(function(d){
+      return d.id
+    })
+    return spaceIds.indexOf(d.space_id) * rowHeight
+  })
+  .attr("width","100%")
+  .attr("height","100%")
+  .attr("dy", "1.25em")
+  .attr("dx", ".25em")
+  .attr("fill", "#fff")
+  .style("font-size", "10px")
+  .text(function(d){
+    return d.title
+  })
+  
+  function wrap(text, width) {
+    text.each(function() {
+      var text = d3.select(this),
+          words = text.text().split(/\s+/).reverse(),
+          word,
+          line = [],
+          lineNumber = 0,
+          lineHeight = 1.1, // ems
+          y = text.attr("y"),
+          dy = parseFloat(text.attr("dy")),
+          tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+      while (word = words.pop()) {
+        line.push(word);
+        tspan.text(line.join(" "));
+        if (tspan.node().getComputedTextLength() > width) {
+          line.pop();
+          tspan.text(line.join(" "));
+          line = [word];
+          tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+        }
+      }
+    });
+  }
+</script>

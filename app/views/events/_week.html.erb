@@ -1,0 +1,94 @@
+<%= link_to "&laquo; Prev Week".html_safe, show_date_path((@day - 1.week).strftime("%F"),request.query_parameters), class: 'button' %>
+<%= link_to "Next Week &raquo;".html_safe, show_date_path((@day + 1.week).strftime("%F"),request.query_parameters), class: 'button' %>
+<br>
+
+<div class='wrap'>
+  <svg class='cal'></svg>
+</div>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js'></script>
+<script>
+  var spaces = <%= @spaces.to_json.html_safe %>;
+  var data = <%= @events.to_json(include: :notes).html_safe %>;
+  var scaleX = d3.scale.linear().domain([8,22]).range([0,100])
+  var rowHeight = 40;
+  function offsetDayX(d){
+     var m = moment.utc(d.start_date)
+     var dayOfWeek = m.day();
+     var hours = parseInt(m.format("H"))
+     var minutes = m.format("m") / rowHeight;
+     return scaleX(hours + minutes) * (1/7)
+  }
+  function offsetX(d){
+     var m = moment.utc(d.start_date)
+     var dayOfWeek = m.day() - 1;
+     return scaleWeek(dayOfWeek) + offsetDayX(d) + "%"
+  }
+  function squareWidth(d){
+    var now  = d.start_date;
+    var then = d.end_date;
+    var ms = moment(then).diff(moment(now));
+    var du = moment.duration(ms);
+    var hs = du.asHours()
+    return ((scaleX(hs + 8)) / 7) +"%"
+  }
+
+  var scaleWeek = d3.scale.linear().domain([0,7]).range([0,100])
+  // create array of momment objects of dates from empty array
+  var dates = new Array(7).fill('').map(function(el, i){
+    var m = moment('<%= @day.beginning_of_week%>')
+    var d = m.add(i, 'days')
+    return d;
+  })
+
+  var svg = d3
+  .select(".cal")
+
+  // x axis
+  var xAxis = svg
+  .append("g")
+  .attr("class","X Axis week")
+  .selectAll("text")
+  .data(dates)
+  .enter()
+  .append("g")
+  
+  xAxis
+  .append("rect")
+  .attr("x",function(d, i){
+    return scaleWeek(i) + "%"
+  })
+  .attr("rx","3")
+  .attr("ry","3")
+  .attr("stroke", "#ccc")
+  .attr("y", "-2.25em")
+  .attr("width", "5em")
+  .attr("height", "1.75em")
+  .attr("dy","-1em")
+  .attr("fill", "#fff")
+  .style("font-size", "10px")
+  .text(function(d){
+    return d.format('dd MM/DD')
+  })
+  .on("click", function(d){
+    var href = "/days/"+ d.format('YYYY-MM-DD')
+    window.location = href
+  })
+
+  xAxis
+  .append("text")
+  .attr("x",function(d, i){
+    return scaleWeek(i)+.5 + "%"
+  })
+  .attr("dy","-1em")
+  .attr("fill", "#000")
+  .style("font-size", "10px")
+  .text(function(d){
+    return d.format('dd MM/DD')
+  })
+  .on("click", function(d){
+    var href = "/days/"+ d.format('YYYY-MM-DD')
+    window.location = href
+  })
+  
+</script>
+<%= render "d3repeated" %>

@@ -1,0 +1,51 @@
+<h2>&nbsp;<%= @today %>&nbsp;</h2>
+<%= link_to "&laquo; Yesterday".html_safe, show_date_path(@yesterday, request.query_parameters), class: 'button' %>
+<%= link_to "Tomorrow &raquo;".html_safe, show_date_path(@tomorrow, request.query_parameters), class: 'button' %>
+<br>
+
+<div class='wrap'>
+  <svg class='cal'></svg>
+</div>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js'></script>
+<script>
+  var spaces = <%= @spaces.to_json.html_safe %>;
+  var data = <%= @events.to_json(include: :notes).html_safe %>;
+  var scaleX = d3.scale.linear().domain([8,22]).range([0,100])
+  var rowHeight = 40;
+  function offsetX(d){
+     var m = moment.utc(d.start_date)
+     var hours = parseInt(m.format("H"))
+     var minutes = m.format("m") / rowHeight;
+     return scaleX(hours + minutes) +"%"
+  }
+  function squareWidth(d){
+    var now  = d.start_date;
+    var then = d.end_date;
+    var ms = moment(then).diff(moment(now));
+    var du = moment.duration(ms);
+    var hs = du.asHours()
+    return scaleX(hs + 8) +"%"
+  }
+
+  var svg = d3
+  .select(".cal")
+
+  // x axis
+  svg
+  .append("g")
+  .attr("class","X Axis")
+  .selectAll("text")
+  .data([8,9,10,11,12,13,14,15,16,17,18,19,20,21,22])
+  .enter()
+  .append("text")
+  .attr("x",function(d){
+    return scaleX(d) + "%"
+  })
+  .attr("dy","-1em")
+  .attr("fill", "#000")
+  .style("font-size", "10px")
+  .text(function(d){
+    return d
+  })
+</script>
+<%= render "d3repeated" %>

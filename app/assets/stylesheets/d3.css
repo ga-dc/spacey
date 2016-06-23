@@ -10,3 +10,21 @@
 .d3-tip p {
   margin: 0;
 }
+
+.wrap{
+  padding-left:4em;
+  padding-top:2em;
+}
+.cal{
+  border: 1px solid black;
+  width:100%;
+  height:600px;
+  overflow:visible;
+}
+[data-approved="false"]{
+  opacity: .5;
+  stroke: #000;
+  fill: none;
+  stroke-dasharray: 5,5;
+  stroke-width: 2;
+}
