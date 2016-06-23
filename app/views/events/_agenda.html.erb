@@ -8,6 +8,24 @@
        <span class='dot' style="background: <%= event.color %>"></span>
        <span><%= event.title %><span><small> (<%= event.space.title %> @ <%= event.start_date.strftime("%l%p") %> - <%= event.end_date.strftime("%l%p") %>)</small>
      <% end %>
+     <ul>
+       <li><strong>Room:</strong> <%= event.space.title %></li>
+       <% if event.producer %>
+	 <li><strong>Producer:</strong> <%= event.producer%></li>
+       <% end %>
+       <% unless event.instructor.blank? %>
+	 <li><strong>Instructor:</strong> <%= event.instructor%></li>
+       <% end %>
+       <% unless event.notes.empty? %>
+	 <li><strong>Notes:</strong>
+	   <ul>
+	     <% event.notes.each do |note| %>
+	       <li><%= note.text %></li>
+	     <% end %>
+	   </ul>
+	 </li>
+       <% end %>
+     </ul>
    </div>
  <% end %>
 </div>
