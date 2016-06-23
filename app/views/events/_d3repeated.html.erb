@@ -12,7 +12,7 @@
   .attr("fill", "#000")
   .style("font-size", "10px")
   .attr("y", function(d, i){
-    return (i * 40) + 30;
+    return (i * rowHeight) + 30;
   })
   .text(function(d){
     return d.title
@@ -29,11 +29,11 @@
   .append("line")
   .attr("x1", 0)
   .attr("y1", function(d, i){
-    return (i * 40);
+    return (i * rowHeight);
   })
   .attr("x2", "100%")
   .attr("y2", function(d, i){
-    return (i * 40);
+    return (i * rowHeight);
   })
   .attr("stroke", "#eee")
   .attr("stroke-width", "1")
@@ -79,10 +79,10 @@
     var spaceIds = spaces.map(function(d){
       return d.id
     })
-    return spaceIds.indexOf(d.space_id) * 40
+    return spaceIds.indexOf(d.space_id) * rowHeight
   })
   .attr("width", squareWidth)
-  .attr("height", "40px")
+  .attr("height", rowHeight)
   .style("fill", function(d){
     return d.custom_color ? d.custom_color : d.color;
   })
@@ -104,7 +104,7 @@
     var spaceIds = spaces.map(function(d){
       return d.id
     })
-    return spaceIds.indexOf(d.space_id) * 40
+    return spaceIds.indexOf(d.space_id) * rowHeight
   })
   .attr("width","100%")
   .attr("height","100%")

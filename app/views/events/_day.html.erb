@@ -11,10 +11,11 @@
   var spaces = <%= @spaces.to_json.html_safe %>;
   var data = <%= @events.to_json(include: :notes).html_safe %>;
   var scaleX = d3.scale.linear().domain([8,22]).range([0,100])
+  var rowHeight = 40;
   function offsetX(d){
      var m = moment.utc(d.start_date)
      var hours = parseInt(m.format("H"))
-     var minutes = m.format("m") / 40;
+     var minutes = m.format("m") / rowHeight;
      return scaleX(hours + minutes) +"%"
   }
   function squareWidth(d){
