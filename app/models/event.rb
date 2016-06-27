@@ -59,6 +59,10 @@ class Event < ActiveRecord::Base
   # TODO validation for recurring events sucks
   # TODO can't update non-recurring event to become recurring
   def color
-    self.custom_color || self.event_type.color
+    if self.custom_color
+      self.custom_color
+    elsif self.event_type
+      self.event_type.color
+    end
   end
 end
