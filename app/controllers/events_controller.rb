@@ -26,6 +26,7 @@ class EventsController < ApplicationController
     else
       @event = Event.new(event_params.merge(start_date: start_date, end_date: end_date))
       if @event.save
+	@event.notes.create(text: params[:notes]) unless params[:notes].empty?
         respond_to do |format|
           format.html { redirect_to show_date_path(@event.start_date.strftime("%F")) }
           format.json { render json: @event }
