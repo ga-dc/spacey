@@ -6,7 +6,7 @@
    <div class='event' data-color="<%= event.color %>">
      <%= link_to event do %>
        <span class='dot' style="background: <%= event.color %>"></span>
-       <span><%= event.title %><span><small> (<%= event.space.title %> @ <%= event.start_date.strftime("%l%p") %> - <%= event.end_date.strftime("%l%p") %>)</small>
+       <span><%= event.title %><span><small> (<%= event.space.title %> @ <%= event.start_date.strftime("%l:%M%p") %> - <%= event.end_date.strftime("%l:%M%p") %>)</small>
      <% end %>
      <ul>
        <li><strong>Room:</strong> <%= event.space.title %></li>
