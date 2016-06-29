@@ -93,6 +93,9 @@ class EventsController < ApplicationController
     if params[:view] == "week"
       @events = Event.where("start_date > ? AND end_date < ?", @day.beginning_of_week, @day.end_of_week)
     end
+    if params[:view] == "month"
+      @events = Event.where("start_date > ? AND end_date < ?", @day.beginning_of_month, @day.end_of_month)
+    end
     session[:last_view] = request.original_url
   end
   def check_availability

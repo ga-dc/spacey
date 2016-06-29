@@ -1,0 +1,8 @@
+<%= month_calendar(attribute: :start_date, events: @events) do |date, events| %>
+  <strong><small><%= link_to date.strftime("%m/%d"), show_date_path(date.to_s)  %></small></strong>
+  <% events.each do |event| %>
+    <div>
+      <%= link_to event.title, event_path(event) %>
+    </div>
+  <% end %>
+<% end %>

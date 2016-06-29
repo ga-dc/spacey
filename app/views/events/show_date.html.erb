@@ -7,6 +7,9 @@
   <a class='button <%="active" if params[:view]=="week" %>' href='<%= show_date_path(@day.strftime("%F"), request.query_parameters.merge(view: 'week'))%>'>
     Week
   </a>
+  <a class='button <%="active" if params[:view]=="month" %>' href='<%= show_date_path(@day.strftime("%F"), request.query_parameters.merge(view: 'month'))%>'>
+    Month
+  </a>
   <a class='button <%="active" if params[:view]=="agenda" %>' href='<%= show_date_path(@day.strftime("%F"), request.query_parameters.merge(view: 'agenda'))%>'>
     Agenda
   </a>
@@ -16,6 +19,8 @@
   <%= render "agenda" %>
 <% elsif params[:view] == "week" %>
   <%= render "week" %>
+<% elsif params[:view] == "month" %>
+  <%= render "month" %>
 <% else %>
   <%= render "day" %>
 <% end %>
