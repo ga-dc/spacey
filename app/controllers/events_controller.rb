@@ -94,6 +94,7 @@ class EventsController < ApplicationController
       @events = Event.where("start_date > ? AND end_date < ?", @day.beginning_of_week, @day.end_of_week)
     end
     if params[:view] == "month"
+      @day = Date.parse(params[:start_date]) if params[:start_date]
       @events = Event.where("start_date > ? AND end_date < ?", @day.beginning_of_month, @day.end_of_month)
     end
     session[:last_view] = request.original_url
