@@ -36,7 +36,7 @@ class Event < ActiveRecord::Base
     endd = self.end_date
     @events = Event.same_space(self.space_id).diff_event(self.id).overlaping(start, endd)
     if @events.count > 0
-      errors.add(:event, "space and time are not available during the date/time you requested." )
+      errors.add(:event, "space and time are not available during the date/time you requested.<br>These events conflict: " + @events.map{|e|  "https://gadc.space/events/" + e.id.to_s }.join("<br>"))
     end
   end
   def is_postive_time

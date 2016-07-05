@@ -1,7 +1,7 @@
 <% if @event.errors.any? %>
   <% @event.errors.full_messages.each do |err| %>
     <div class='error'>
-      <%= err %>
+      <%= err.html_safe %>
     </div>
   <% end %>
 <% end %>
@@ -71,28 +71,6 @@
     }
     $.ajax({
       method: "post",
-      url: url,
-      data: data
-    }).done(function(res){
-      console.log("Response:", res);
-      var d = moment(res.start_date).format("YYYY-MM-DD")
-      window.location = "/days/"+ d
-    }).fail(function(res){
-      console.log("Response:", res);
-    })
-  })
-  
-  // TODO turn into a function to dry up more, switch/case for url & method?
-  $(".edit_event").on("submit", function(e){
-    e.preventDefault()
-    var data = $(this).serialize()
-    
-    if ($(document.activeElement).val() == "Update Event") {
-      url =  "/events/" + $('#event').attr('data') + ".json"
-    } 
-    console.log(url);
-    $.ajax({
-      method: "put",
       url: url,
       data: data
     }).done(function(res){

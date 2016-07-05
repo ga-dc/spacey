@@ -1,6 +1,5 @@
 class EventsController < ApplicationController
   include IceCube
-    
   def index
     @events = Event.all
   end
@@ -58,7 +57,7 @@ class EventsController < ApplicationController
         format.json { render json: @event }
       end
     else
-      render :js => "alert('Something went wrong. Check the details and try again.')"
+      render "edit"
     end
   end
   def update_approval
