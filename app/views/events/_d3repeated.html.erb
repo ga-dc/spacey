@@ -98,7 +98,7 @@
   })
 
   square
-  .append("text")
+  .append("foreignObject")
   .attr("x", offsetX)
   .attr("y", function(d, i){
     var spaceIds = spaces.map(function(d){
@@ -106,12 +106,14 @@
     })
     return spaceIds.indexOf(d.space_id) * rowHeight
   })
-  .attr("width","100%")
+  .attr("width",squareWidth)
   .attr("height","100%")
   .attr("dy", "1.25em")
   .attr("dx", ".25em")
   .attr("fill", "#fff")
   .style("font-size", "10px")
+  .style("overflow", "hidden")
+  .style("font-weight", "bold")
   .text(function(d){
     return d.title
   })

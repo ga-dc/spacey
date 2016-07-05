@@ -29,16 +29,6 @@ $(function(){
       data: { color: color }
     })
   })
-
-  // hide text overflowing container in week view
-  var calWidth = $(".cal").width()
-  $(".events text").each(function(){
-    var thisWidth = $(this).width()
-    var beforeWidth = parseFloat($(this).prev().attr("width")) * calWidth / 100
-    if(thisWidth > beforeWidth){
-      $(this).hide()
-    }
-  })
 })
 
 $.fn.recurring_select.options = {
