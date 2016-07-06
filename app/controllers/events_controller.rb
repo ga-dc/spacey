@@ -50,8 +50,6 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     recurring_event = @event.recurring_event if @event.recurring_event_id
     @recurring_event = recurring_event
-    start_date = start_date.change(day: @event.start_date.day)
-    end_date = end_date.change(day: @event.end_date.day)
     if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
       respond_to do |format|
         format.html { redirect_to show_date_path(@event.start_date.strftime("%F")) }
