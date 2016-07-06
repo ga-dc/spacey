@@ -51,13 +51,18 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     recurring_event = @event.recurring_event if @event.recurring_event_id
     @recurring_event = recurring_event
-    if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
-      respond_to do |format|
-        format.html { redirect_to show_date_path(@event.start_date.strftime("%F")) }
-        format.json { render json: @event }
-      end
+    if params[:update_all]
+      Event.update_recurring_events(params, event_params, start_date, end_date, recurring_event)
+      go_back
     else
-      render "edit"
+      if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
+	respond_to do |format|
+	  format.html { redirect_to show_date_path(@event.start_date.strftime("%F")) }
+	  format.json { render json: @event }
+	end
+      else
+	render "edit"
+      end
     end
   end
   def update_approval
