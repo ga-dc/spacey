@@ -1,6 +1,11 @@
 class RecurringEventsController < ApplicationController
   include IceCube
       
+  def edit
+    @recurring_event = RecurringEvent.find(params[:id])
+    @event = @recurring_event.events.first
+    render "events/edit"
+  end
   def create
     start_date, end_date, sched = recurring_info(params)
     if recurring_event = RecurringEvent.create!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))

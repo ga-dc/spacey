@@ -1,10 +1,7 @@
-<%= link_to "&laquo; Back".html_safe, session[:back] if session[:back] %>
-<br>
-<br>
 <% if @event.errors.any? %>
   <% @event.errors.full_messages.each do |err| %>
     <div class='error'>
-      <%= err.html_safe %>
+      <%= err %>
     </div>
   <% end %>
 <% end %>
@@ -17,8 +14,7 @@
   <%= f.select :space_id, Space.all.collect{|s| [s.title, s.id] } %>
   <br>
   <%= f.label :custom_color %>
-  <input class='js-custom-color' type='color' name='event[custom_color]' value='<%= @event.color %>'>
-  <script> var colors = <%= Hash[EventType.all.map{|et| [et.title, et.color] }].to_json.html_safe %></script>
+  <input type='color' name='event[custom_color]' value='<%= @event.custom_color %>'>
   <span class="swatch start">S</span>
   <span class="swatch middle">M</span>
   <span class="swatch end">E</span>
@@ -27,23 +23,31 @@
   <%= f.select :event_style, ["Class", "Lecture", "Other - See Notes"], selected: "Class" %>
   <br>
   <%= f.label :event_type_id %>
+  <% kinds = ["Immersive", "Part Time Course", "Info Session", "C&W", "Event", "Alumni", "Internal"]%>
   <%= f.select :event_type_id, EventType.all.collect{|et| [et.title, et.id] } %>
   <br>
-  <%= f.label :start_date %>
-  <input class='datetimepicker' name='event[start_date]' required="true" value="<%= @event.start_date || @day %>" >
-  <br>
-  <%= f.label :end_date %>
-  <input class='datetimepicker' name='event[end_date]' required="true" value="<%=@event.end_date || @day %>">
-  <br>
-  <% unless @recurring_event %>
-  <%= f.label :recurring_rules, "Recurring?" %>
-  <%= f.select_recurring :recurring_rules, [
-    IceCube::Rule.weekly.day(:monday, :wednesday),
-    IceCube::Rule.weekly.day(:tuesday, :thursday),
-    IceCube::Rule.weekly.day(:monday, :tuesday, :wednesday, :thursday, :friday)
-    ], :allow_blank => true %>
-  <br>
+  <% if @recurring_event %>
+    <span id='recurring_event' data='<%= @recurring_event.id %>' style='display: none'>Recurring Event</span>
+    <%= f.label :start_date %>
+    <input class='datetimepicker' name='event[start_date]' required="true" value="<%= @recurring_event.start_date%>" >
+    <br>
+    <%= f.label :end_date %>
+    <input class='datetimepicker' name='event[end_date]' required="true" value="<%=@recurring_event.end_date %>">
+    <br>
+    <%= f.label :recurring_rules, "Recurring?" %>
+    <%= f.select_recurring :recurring_rules, [
+      IceCube::Schedule.from_hash(@recurring_event.recurring_rules).recurrence_rules[0],
+      IceCube::Rule.daily,
+      IceCube::Rule.weekly.day(:monday, :tuesday, :wednesday, :thursday, :friday)
+      ] %>
+  <% else %>
+    <%= f.label :start_date %>
+    <input class='datetimepicker' name='event[start_date]' required="true" value="<%= @event.start_date%>" >
+    <br>
+    <%= f.label :end_date %>
+    <input class='datetimepicker' name='event[end_date]' required="true" value="<%=@event.end_date %>">
   <% end %>
+  <br>
   <%= f.label :producer %>
   <%= f.text_field :producer %>
   <br>
@@ -58,10 +62,11 @@
   <%= f.check_box :approved %>
   <br>
   <% end %>
-  <h3>Notes</h3>
-  <%= text_area_tag :notes %>
-  <br>
+  <% if @recurring_event %>
+  <%= f.submit :"Update all", name: 'update_all', data: {confirm: "Are you sure? This will change all events in the series."} %>
+  <% else %>
   <%= f.submit %>
+  <% end %>
 <% end %>
 <script type="text/javascript">
   var url;
@@ -71,20 +76,19 @@
     var data = $(this).serialize()
     
     if ($("select#event_recurring_rules").val() === "null") {
-      url = "/events"  + ".json"
+      url = window.location.origin + "/events"
     } else {
-      url = "/recurring_events"  + ".json"
+      url = window.location.origin + "/recurring_events"
     }
+    console.log(url);
     $.ajax({
       method: "post",
       url: url,
       data: data
     }).done(function(res){
-      console.log("Response:", res);
-      var d = moment(res.start_date).format("YYYY-MM-DD")
-      window.location = "/days/"+ d
+      console.log(res);
     }).fail(function(res){
-      console.log("Response:", res);
+      console.log(res);
     })
   })
 </script>

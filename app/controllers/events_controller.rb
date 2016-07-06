@@ -42,8 +42,8 @@ class EventsController < ApplicationController
     if @event.recurring_event_id
       @recurring_event = RecurringEvent.find(@event.recurring_event_id)
     else 
-      @recurring_event = nil
     end
+    @recurring_event = nil
   end
   def update
     start_date = DateTime.parse(params[:event][:start_date])
