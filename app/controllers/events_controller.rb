@@ -83,6 +83,7 @@ class EventsController < ApplicationController
   def show_date
     day = params[:date] || Date.today.to_s
     @day = Date.parse(day)
+    session[:back] = show_date_path(@day, params[:view])
     @today = @day.strftime("%A, %b %e, %Y")
     @yesterday = (Date.parse(day) - 1.day).strftime("%F")
     @tomorrow = (Date.parse(day) + 1.day).strftime("%F")
