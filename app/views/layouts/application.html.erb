@@ -19,7 +19,7 @@
     <%= link_to "Logout #{current_user.name}", logout_path %>
     <br><br>
 <nav>
-  <%= link_to new_event_path do %>
+  <%= link_to new_event_path(day: @dayparams) do %>
     <span class='fa fa-plus'></span> New Event
   <% end %>
   <% if can? :approve, @event %>
