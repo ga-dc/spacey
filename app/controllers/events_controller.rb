@@ -11,8 +11,8 @@ class EventsController < ApplicationController
     @note = Note.new
   end
   def queue
-    @events = Event.where(approved: nil).order(start_date: :desc)
-    authorize! :approve, @events.last || Event.new
+    authorize! :approve, @event
+    @events = Event.where(approved: false).order(start_date: :desc)
   end
   def new
     @event = Event.new
@@ -64,12 +64,11 @@ class EventsController < ApplicationController
     @event = Event.find(params[:event_id])
     if params[:commit] == 'Approve'
       @event.approved = true
-    elsif params[:commit] == 'Deny'
-      @event.approved = false
     end
-    if @event.save!
+    if @event.save
       redirect_to events_queue_path
     else
+      flash[:notice] = @event.errors.full_messages.join("")
       redirect_to events_queue_path
     end
   end

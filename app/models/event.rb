@@ -8,6 +8,7 @@ class Event < ActiveRecord::Base
   validate :is_available, :is_postive_time, :room_capactity
   validates :space_id, :start_date, :end_date, :title, :event_style, presence: true
   
+  scope :unapproved, -> { where('approved = false')}
   scope :same_space, -> (space_id){ where('space_id = ?', space_id)}
   scope :diff_event, -> (event_id){ where('id != ?', event_id)}
   scope :overlaping, -> (start, endd){ 

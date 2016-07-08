@@ -137,7 +137,7 @@ form {
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: .5em;
-  margin: 0 0.5em;
+  margin: 0 0.5em 1em .5em;
 }
 
 .swatch {
@@ -194,4 +194,24 @@ form {
   fill: none;
   stroke-dasharray: 5,5;
   stroke-width: 2;
+}
+.queue-count{
+  position:relative;
+}
+
+.queue-count span{
+  background: red;
+  border-radius: 100%;
+  color:#fff;
+  font-size:.6em;
+  height:1.75em;
+  display:block;
+  width:1.75em;
+  line-height:2;
+  position:absolute;
+  top:0;
+  right:0;
+  transform:translate(50%, -50%);
+  box-sizing: border-box;
+  text-align:center;
 }

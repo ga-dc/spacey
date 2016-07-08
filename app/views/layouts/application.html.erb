@@ -13,7 +13,7 @@
 <%= link_to image_tag("spacey.png"), root_path %>
 </h1>
 <% if flash[:notice] %>
-  <p class="flash-notice"><%= flash[:notice] %></p>
+  <p class="error"><%= flash[:notice].html_safe %></p>
 <% end %>
 <% if current_user %>
     <%= link_to "Logout #{current_user.name}", logout_path %>
@@ -23,7 +23,11 @@
     <span class='fa fa-plus'></span> New Event
   <% end %>
   <% if can? :approve, @event %>
-    <%= link_to "Queue", events_queue_path %>
+    <%= link_to events_queue_path, class:'queue-count' do %>
+      <% if @queue_count > 0 %>
+	Queue <span><%= @queue_count %></span>
+      <% end %>
+    <% end %>
   <% end %>
   <%= link_to  show_date_path(Time.now.strftime("%F"),request.query_parameters.except(:start_date)) do %>
     <span class='fa fa-clock-o'></span> Today
