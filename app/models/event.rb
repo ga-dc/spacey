@@ -4,10 +4,10 @@ class Event < ActiveRecord::Base
   belongs_to :space
   belongs_to :event_type
   belongs_to :recurring_event
-  
+
   validate :is_available, :is_postive_time, :room_capactity
   validates :space_id, :start_date, :end_date, :title, :event_style, presence: true
-  
+
   scope :unapproved, -> { where('approved = false')}
   scope :same_space, -> (space_id){ where('space_id = ?', space_id)}
   scope :diff_event, -> (event_id){ where('id != ?', event_id)}
@@ -16,10 +16,10 @@ class Event < ActiveRecord::Base
     where('(? <= end_date AND ? >= start_date)', start, endd)
   }
   scope :by_date, -> (day){ where(start_date: day.beginning_of_day..day.end_of_day)}
-  
+
   include IceCube
   attr_accessor :recurring_rules
-  
+
   def repeat days
     days = self.end_date - self.start_date
     current_day = self.start_date
@@ -35,9 +35,12 @@ class Event < ActiveRecord::Base
   def is_available
     start = self.start_date
     endd = self.end_date
-    @events = Event.same_space(self.space_id).diff_event(self.id).overlaping(start, endd)
+    if self.id
+      @events = Event.same_space(self.space_id).diff_event(self.id).overlaping(start, endd)
+    else
+      @events = Event.same_space(self.space_id).overlaping(start, endd)
+    end
     if @events.count > 0
-      binding.pry
       errors.add(:event, "space and time are not available during the date/time you requested.<br>These events conflict: " + @events.map{|e|  "https://gadc.space/events/" + e.id.to_s }.join("<br>"))
     end
   end
@@ -67,7 +70,7 @@ class Event < ActiveRecord::Base
       self.event_type.color
     end
   end
-def self.recurring_helper(params, event_params, start_date, end_date)
+  def self.recurring_helper(params, event_params, start_date, end_date)
     rec_rules  = RecurringSelect.dirty_hash_to_rule(params['event']['recurring_rules'])
     dur_in_sec = end_date.seconds_since_midnight - start_date.seconds_since_midnight
     total_dur = (end_date.strftime("%s").to_i - start_date.strftime("%s").to_i)
@@ -77,7 +80,7 @@ def self.recurring_helper(params, event_params, start_date, end_date)
     occurrences = occurrences.map{|o| o.to_datetime.change(:offset => "+0000")}
     return [dur_in_sec, sched, occurrences]
   end
-def self.update_recurring_events(params, event_params, start_date, end_date, recurring_event)
+  def self.update_recurring_events(params, event_params, start_date, end_date, recurring_event)
     new_st = start_date
     new_et = end_date
     if start_date.strftime('%D') == end_date.strftime('%D')
@@ -91,6 +94,13 @@ def self.update_recurring_events(params, event_params, start_date, end_date, rec
     recurring_event.events.destroy_all
     occurrences.each do |occurrence|
       recurring_event.events.create!(event_params.merge(start_date: occurrence, end_date: occurrence + dur_in_sec.seconds))
+    end
+  end
+  def self.create_recurring_events(params, event_params, start_date, end_date)
+    dur_in_sec, sched, occurrences = self.recurring_helper(params, event_params, start_date, end_date)
+    rec = RecurringEvent.create!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
+    occurrences.each do |occurrence|
+      rec.events.create!(event_params.merge(start_date: occurrence, end_date: occurrence + dur_in_sec.seconds))
     end
   end
 end

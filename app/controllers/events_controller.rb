@@ -33,7 +33,7 @@ class EventsController < ApplicationController
           format.json { render json: @event }
         end
       else
-        render :js => "alert('Something went wrong. Check the details and try again.')"      
+        render "new"
       end
     end
   end

@@ -47,6 +47,13 @@
     <br>
     <%= f.label :end_date %>
     <input class='datetimepicker' name='event[end_date]' required="true" value="<%=@event.end_date %>">
+    <br>
+    <%= f.label :recurring_rules, "Recurring?" %>
+    <%= f.select_recurring :recurring_rules, [
+    IceCube::Rule.weekly.day(:monday, :wednesday),
+    IceCube::Rule.weekly.day(:tuesday, :thursday),
+    IceCube::Rule.weekly.day(:monday, :tuesday, :wednesday, :thursday, :friday)
+    ], :allow_blank => true %>
   <% end %>
   <br>
   <%= f.label :producer %>
@@ -68,28 +75,7 @@
   <% else %>
   <%= f.submit %>
   <% end %>
+  <h3>Notes</h3>
+  <%= text_area_tag :notes %>
+  <br>
 <% end %>
-<script type="text/javascript">
-  var url;
-    
-  $(".new_event").on("submit", function(e){
-    e.preventDefault()
-    var data = $(this).serialize()
-    
-    if ($("select#event_recurring_rules").val() === "null") {
-      url = window.location.origin + "/events"
-    } else {
-      url = window.location.origin + "/recurring_events"
-    }
-    console.log(url);
-    $.ajax({
-      method: "post",
-      url: url,
-      data: data
-    }).done(function(res){
-      console.log(res);
-    }).fail(function(res){
-      console.log(res);
-    })
-  })
-</script>
