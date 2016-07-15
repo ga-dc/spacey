@@ -13,7 +13,7 @@ class Event < ActiveRecord::Base
   scope :diff_event, -> (event_id){ where('id != ?', event_id)}
   scope :overlaping, -> (start, endd){
     return [] if endd - start > 1.day
-    where('(? <= end_date AND ? >= start_date)', start, endd)
+    where('(? < end_date AND ? > start_date)', start, endd)
   }
   scope :by_date, -> (day){ where(start_date: day.beginning_of_day..day.end_of_day)}
 
