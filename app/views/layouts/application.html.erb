@@ -24,8 +24,9 @@
   <% end %>
   <% if can? :approve, @event %>
     <%= link_to events_queue_path, class:'queue-count' do %>
+      Queue
       <% if @queue_count > 0 %>
-	Queue <span><%= @queue_count %></span>
+	      <span><%= @queue_count %></span>
       <% end %>
     <% end %>
   <% end %>

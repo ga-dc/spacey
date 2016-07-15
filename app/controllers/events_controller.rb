@@ -12,7 +12,7 @@ class EventsController < ApplicationController
   end
   def queue
     authorize! :approve, @event
-    @events = Event.where(approved: false).order(start_date: :desc)
+    @events = Event.unapproved.order(start_date: :desc)
   end
   def new
     @event = Event.new
@@ -41,7 +41,7 @@ class EventsController < ApplicationController
     @event = Event.find(params[:id])
     if @event.recurring_event_id
       @recurring_event = RecurringEvent.find(@event.recurring_event_id)
-    else 
+    else
     end
     @recurring_event = nil
   end
