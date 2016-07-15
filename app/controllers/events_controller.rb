@@ -27,7 +27,7 @@ class EventsController < ApplicationController
     else
       @event = Event.new(event_params.merge(start_date: start_date, end_date: end_date))
       if @event.save
-	@event.notes.create(text: params[:notes]) unless params[:notes].empty?
+	       @event.notes.create(text: params[:notes]) unless params[:notes].empty?
         respond_to do |format|
           format.html { redirect_to show_date_path(@event.start_date.strftime("%F")) }
           format.json { render json: @event }
@@ -45,6 +45,7 @@ class EventsController < ApplicationController
     end
     @recurring_event = nil
   end
+
   def update
     start_date = DateTime.parse(params[:event][:start_date])
     end_date = DateTime.parse(params[:event][:end_date])
@@ -52,16 +53,21 @@ class EventsController < ApplicationController
     recurring_event = @event.recurring_event if @event.recurring_event_id
     @recurring_event = recurring_event
     if params[:update_all]
-      Event.update_recurring_events(params, event_params, start_date, end_date, recurring_event)
+      begin
+        Event.update_recurring_events(params, event_params, start_date, end_date, recurring_event)
+      rescue Exception => e
+        @recurring_event.errors.add(:start_date, e.to_s)
+        return render :edit
+      end
       go_back
     else
       if @event.update(event_params.merge(start_date: start_date, end_date: end_date))
-	respond_to do |format|
-	  format.html { redirect_to show_date_path(@event.start_date.strftime("%F")) }
-	  format.json { render json: @event }
-	end
+      	respond_to do |format|
+      	  format.html { redirect_to show_date_path(@event.start_date.strftime("%F")) }
+      	  format.json { render json: @event }
+      	end
       else
-	render "edit"
+      	render "edit"
       end
     end
   end

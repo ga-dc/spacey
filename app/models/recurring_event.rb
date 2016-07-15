@@ -2,13 +2,17 @@ class RecurringEvent < ActiveRecord::Base
   has_many :events, dependent: :destroy
   has_many :spaces
   belongs_to :event_type
-  
+
   validates :space_id, :start_date, :end_date, :title, :event_style, :recurring_rules, presence: true
   after_create :create_events
   after_update :update_events
-  
+
   include IceCube
-  
+
+  def color
+    self.event_type.color
+  end
+
   def create_events
     sched = Schedule.from_hash(self.recurring_rules)
     dur_in_sec = self.end_date.seconds_since_midnight - self.start_date.seconds_since_midnight

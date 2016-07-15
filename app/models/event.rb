@@ -51,12 +51,13 @@ class Event < ActiveRecord::Base
   end
   def room_capactity
     @space = Space.find(self.space_id)
+    cap = @space.classroom_cap || @space.lecture_cap
     if self.event_style == 'Lecture'
-      if self.number_of_attendees && self.number_of_attendees > @space.lecture_cap
+      if cap && self.number_of_attendees && self.number_of_attendees > cap
         errors.add(:event, "space selected has a max lecture capacity of #{@space.lecture_cap}, please select a different space." )
       end
     else
-      if self.number_of_attendees && self.number_of_attendees > @space.classroom_cap
+      if cap && self.number_of_attendees && self.number_of_attendees > cap
         errors.add(:event, "space selected has a max classroom capacity of #{@space.classroom_cap}, please select a different space." )
       end
     end
