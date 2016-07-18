@@ -5,6 +5,13 @@
     </div>
   <% end %>
 <% end %>
+<% if @recurring_event.errors.any? %>
+  <% @recurring_event.errors.full_messages.each do |err| %>
+    <div class='error'>
+      <%= err.html_safe %>
+    </div>
+  <% end %>
+<% end %>
 <%= form_for @event do |f| %>
   <span id='event' data='<%= @event.id %>' style='display: none'>Event</span>
   <%= f.label :title %>

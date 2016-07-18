@@ -51,12 +51,13 @@ class Event < ActiveRecord::Base
   end
   def room_capactity
     @space = Space.find(self.space_id)
+    cap = @space.classroom_cap || @space.lecture_cap
     if self.event_style == 'Lecture'
-      if self.number_of_attendees && self.number_of_attendees > @space.lecture_cap
+      if cap && self.number_of_attendees && self.number_of_attendees > cap
         errors.add(:event, "space selected has a max lecture capacity of #{@space.lecture_cap}, please select a different space." )
       end
     else
-      if self.number_of_attendees && self.number_of_attendees > @space.classroom_cap
+      if cap && self.number_of_attendees && self.number_of_attendees > cap
         errors.add(:event, "space selected has a max classroom capacity of #{@space.classroom_cap}, please select a different space." )
       end
     end
@@ -91,7 +92,6 @@ class Event < ActiveRecord::Base
     end
     dur_in_sec, sched, occurrences = self.recurring_helper(params, event_params, start_date, end_date)
     recurring_event.update!(event_params.merge(start_date: start_date, end_date: end_date, recurring_rules: sched.to_hash))
-    recurring_event.events.destroy_all
     occurrences.each do |occurrence|
       recurring_event.events.create!(event_params.merge(start_date: occurrence, end_date: occurrence + dur_in_sec.seconds))
     end
