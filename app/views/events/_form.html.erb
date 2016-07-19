@@ -5,7 +5,7 @@
     </div>
   <% end %>
 <% end %>
-<% if @recurring_event.errors.any? %>
+<% if @recurring_event && @recurring_event.errors.any? %>
   <% @recurring_event.errors.full_messages.each do |err| %>
     <div class='error'>
       <%= err.html_safe %>
