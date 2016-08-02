@@ -19,6 +19,14 @@
 <% if current_user %>
     <%= link_to "Logout #{current_user.name}", logout_path %>
     <br><br>
+  <nav>
+  <%= link_to '/front-lines', class: 'button' do %>
+    <span class='fa fa-cogs'></span> Front Lines Directory
+  <% end %>
+  <%= link_to utilizations_path, class: 'button' do %>
+    <span class='fa fa-line-chart'></span> Utilizations
+  <% end %>
+  </nav>
 <nav>
   <%= link_to new_event_path(day: @dayparams) do %>
     <span class='fa fa-plus'></span> New Event
@@ -30,15 +38,12 @@
 	      <span><%= @queue_count %></span>
       <% end %>
     <% end %>
+    <%= link_to settings_path do%>
+      <span class='fa fa-cog'></span> Settings
+    <% end %>
   <% end %>
   <%= link_to  show_date_path(Time.now.strftime("%F"),request.query_parameters.except(:start_date)) do %>
     <span class='fa fa-clock-o'></span> Today
-  <% end %>
-  <%= link_to settings_path do%>
-    <span class='fa fa-cog'></span> Settings
-  <% end %>
-  <%= link_to utilizations_path do %>
-    <span class='fa fa-line-chart'></span> Utilizations
   <% end %>
   <a href='#' class='jump-to js-jump-to'>
     Jump to Date

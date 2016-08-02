@@ -19,4 +19,5 @@ Rails.application.routes.draw do
     resources :notes
   end
   get 'settings', to: 'settings#index'
+  get 'front-lines', to: 'static#front_lines'
 end

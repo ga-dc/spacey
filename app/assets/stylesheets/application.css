@@ -215,3 +215,11 @@ form {
   box-sizing: border-box;
   text-align:center;
 }
+
+table {
+  width: 100%;
+}
+
+table td, table th{
+  padding:.5em;
+}
