@@ -1,8 +1,5 @@
 class EventsController < ApplicationController
   include IceCube
-  def index
-    @events = Event.all
-  end
   def show
     @event = Event.find(params[:id])
     if @event.recurring_event_id
@@ -90,6 +87,7 @@ class EventsController < ApplicationController
     go_back
   end
   def show_date
+    return search unless params[:query].blank?
     day = params[:date] || Date.today.to_s
     @day = Date.parse(day)
     @dayparams = @day.strftime("%F")
@@ -121,9 +119,15 @@ class EventsController < ApplicationController
     end
   end
   private
+  def search
+    @events = Event.where("lower(title) LIKE ?", "%" + params[:query].downcase + "%" )
+    render :search
+  end
+
   def event_params
     params.require(:event).permit(:title, :space_id, :event_type_id, :producer, :approved, :instructor, :number_of_attendees, :start_date, :end_date, :kind, :event_style, :recurring_rules, :custom_color)
   end
+
   def go_back
     return redirect_to session[:last_view] if session[:last_view]
     redirect_to :back

@@ -1,0 +1,11 @@
+<% if @events.any? %>
+  <h3>Results</h3>
+  <ul>
+  <% @events.each do |event| %>
+    <li><%= link_to "#{event.title} - #{event.start_date.strftime("%F")}", event %>
+    </li>
+  <% end %>
+  </ul>
+  <% else %>
+  <p>No Results Found</p>
+<% end %>
