@@ -1,8 +1,10 @@
 <%= link_to "&laquo; Back".html_safe, session[:back] if session[:back] %>
 <h2><%= @event.title %></h2>
 <% if @recurring_event %>
-  <%= link_to "Edit All", edit_recurring_event_path(@recurring_event), class: 'button' %>
-  <%= link_to "Delete All", recurring_event_path(@recurring_event), method: :delete, data: {confirm: "Are you sure?"}, class: 'button' %>
+  <% if can? :approve, @event %>
+    <%= link_to "Edit All", edit_recurring_event_path(@recurring_event), class: 'button' %>
+    <%= link_to "Delete All", recurring_event_path(@recurring_event), method: :delete, data: {confirm: "Are you sure?"}, class: 'button' %>
+  <% end %>
 <% end %>
 <p><%= @event.start_date.strftime("%F %H:%M") %> -
   <%= @event.end_date.strftime("%F %H:%M") %></p>
@@ -12,8 +14,10 @@
 <p>Attendees: <%= @event.number_of_attendees %></p>
 <p>Producer: <%= @event.producer %></p>
 <p>Instructor: <%= @event.instructor %></p>
-<%= link_to "Edit", edit_event_path(@event), class: 'button'%>
-<%= link_to "Delete", event_path(@event), method: :delete, data: {confirm: "Are you sure?"}, class: 'button' %>
+<% if can? :approve, @event %>
+  <%= link_to "Edit", edit_event_path(@event), class: 'button'%>
+  <%= link_to "Delete", event_path(@event), method: :delete, data: {confirm: "Are you sure?"}, class: 'button' %>
+<% end %>
 <h3>Notes</h3>
 <%= form_for [@event, @note] do |f| %>
   <%= f.text_area :text %>
@@ -25,7 +29,12 @@
       <%= note.text %>
     </p>
     <small>Last updated <%= time_ago_in_words(note.updated_at) %> ago</small>
-    <%= link_to "Edit", edit_event_note_path(@event, note), class: 'button'%>
-    <%= link_to "Delete", event_note_path(@event, note), method: :delete, data: {confirm: "Are you sure?"}, class: 'button' %>
+    <% if note.user %>
+      <small>by <%= note.user.name%></small>
+    <% end %>
+    <% if note.user == current_user %>
+      <%= link_to "Edit", edit_event_note_path(@event, note), class: 'button'%>
+      <%= link_to "Delete", event_note_path(@event, note), method: :delete, data: {confirm: "Are you sure?"}, class: 'button' %>
+    <% end %>
   </div>
 <% end %>

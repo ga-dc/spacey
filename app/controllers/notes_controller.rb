@@ -1,7 +1,7 @@
 class NotesController < ApplicationController
   def create
     @event = Event.find(params[:event_id])
-    @event.notes.create(note_params)
+    @event.notes.create(note_params.merge(user: current_user))
     redirect_to :back
   end
   def edit
