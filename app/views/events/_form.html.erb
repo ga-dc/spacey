@@ -64,7 +64,7 @@
   <% end %>
   <br>
   <%= f.label :producer %>
-  <%= f.text_field :producer %>
+  <%= f.text_field :producer, required: true %>
   <br>
   <%= f.label :instructor %>
   <%= f.text_field :instructor %>
@@ -83,6 +83,6 @@
   <%= f.submit %>
   <% end %>
   <h3>Notes</h3>
-  <%= text_area_tag :notes %>
+  <%= text_area_tag :notes, "", required: true %>
   <br>
 <% end %>
