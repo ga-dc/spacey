@@ -29,7 +29,12 @@
       <%= note.text %>
     </p>
     <small>Last updated <%= time_ago_in_words(note.updated_at) %> ago</small>
-    <%= link_to "Edit", edit_event_note_path(@event, note), class: 'button'%>
-    <%= link_to "Delete", event_note_path(@event, note), method: :delete, data: {confirm: "Are you sure?"}, class: 'button' %>
+    <% if note.user %>
+      <small>by <%= note.user.name%></small>
+    <% end %>
+    <% if note.user == current_user %>
+      <%= link_to "Edit", edit_event_note_path(@event, note), class: 'button'%>
+      <%= link_to "Delete", event_note_path(@event, note), method: :delete, data: {confirm: "Are you sure?"}, class: 'button' %>
+    <% end %>
   </div>
 <% end %>

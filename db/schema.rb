@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160627202130) do
+ActiveRecord::Schema.define(version: 20160823194431) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,9 +47,11 @@ ActiveRecord::Schema.define(version: 20160627202130) do
     t.integer  "event_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
 
   add_index "notes", ["event_id"], name: "index_notes_on_event_id", using: :btree
+  add_index "notes", ["user_id"], name: "index_notes_on_user_id", using: :btree
 
   create_table "recurring_events", force: :cascade do |t|
     t.json     "recurring_rules"
@@ -91,6 +93,7 @@ ActiveRecord::Schema.define(version: 20160627202130) do
   add_foreign_key "events", "recurring_events"
   add_foreign_key "events", "spaces"
   add_foreign_key "notes", "events"
+  add_foreign_key "notes", "users"
   add_foreign_key "recurring_events", "event_types"
   add_foreign_key "recurring_events", "spaces"
 end
