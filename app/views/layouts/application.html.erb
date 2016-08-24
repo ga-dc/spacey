@@ -47,7 +47,7 @@
       <span class='fa fa-cog'></span> Settings
     <% end %>
   <% end %>
-  <%= link_to  show_date_path(Time.now.strftime("%F"),request.query_parameters.except(:start_date)) do %>
+  <%= link_to  show_date_path(Time.now.strftime("%F"),request.query_parameters.except(:start_date, :query)) do %>
     <span class='fa fa-clock-o'></span> Today
   <% end %>
   <a href='#' class='jump-to js-jump-to'>

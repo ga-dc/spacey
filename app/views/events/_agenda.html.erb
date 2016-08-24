@@ -4,11 +4,14 @@
 <div class='wrap agenda'>
  <% @events.each do |event| %> 
    <div class='event' data-color="<%= event.color %>">
-     <%= link_to event do %>
-       <span class='dot' style="background: <%= event.color %>"></span>
-       <span><%= event.title %><span><small> (<%= event.space.title %> @ <%= event.start_date.strftime("%l:%M%p") %> - <%= event.end_date.strftime("%l:%M%p") %>)</small>
-     <% end %>
+     <a class='left' href='<%= event_path(event) %>' style='background: <%= event.color %>'>
+       <span><%= event.title %><span>
+     </a>
+     <div class='right'><%= event.space.title %>
+     </div>
      <ul>
+       <li><strong>Time:</strong> <%= event.start_date.strftime("%l:%M%p") %> - <%= event.end_date.strftime("%l:%M%p") %>
+       </li>
        <li><strong>Room:</strong> <%= event.space.title %></li>
        <% if event.producer %>
 	 <li><strong>Producer:</strong> <%= event.producer%></li>
