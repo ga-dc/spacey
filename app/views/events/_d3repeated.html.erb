@@ -61,11 +61,12 @@
       d.notes.forEach(function(n){ el += "<li>"+ n.text +"</li>"})
       return el
     })
-    .style("visibility", "visible");
+    .style("visibility", "visible")
+    .style("position", "absolute");
     return tooltip;
   })
   .on("mousemove", function(){
-    return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");
+    return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px");
   })
   .on("mouseout", function(){
     return tooltip.style("visibility", "hidden");
@@ -93,8 +94,11 @@
   .attr("href", function(d){
     return "/events/" + d.id
   })
+
+  square
   .on("click", function( ){
-    window.location = this.getAttribute("href")
+    var href = this.querySelector("rect").getAttribute("href");
+    window.location = href
   })
 
   square
@@ -117,7 +121,7 @@
   .text(function(d){
     return d.title
   })
-  
+
   function wrap(text, width) {
     text.each(function() {
       var text = d3.select(this),

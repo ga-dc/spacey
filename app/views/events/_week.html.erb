@@ -51,7 +51,7 @@
   .data(dates)
   .enter()
   .append("g")
-  
+
   xAxis
   .append("rect")
   .attr("x",function(d, i){
@@ -89,6 +89,6 @@
     var href = "/days/"+ d.format('YYYY-MM-DD')
     window.location = href
   })
-  
+
 </script>
 <%= render "d3repeated" %>
