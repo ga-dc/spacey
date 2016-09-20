@@ -82,7 +82,10 @@
   <% else %>
   <%= f.submit %>
   <% end %>
-  <h3>Notes</h3>
-  <%= text_area_tag :notes, "", required: true %>
-  <br>
+
+  <% if !@event.id %>
+    <h3>Notes</h3>
+    <%= text_area_tag :notes, "", required: true %>
+    <br>
+  <% end %>
 <% end %>
