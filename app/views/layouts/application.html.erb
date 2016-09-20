@@ -6,7 +6,13 @@
   <%= javascript_include_tag 'application'%>
   <link rel='stylesheet' type='text/css' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'>
   <%= csrf_meta_tags %>
-  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <script>
+      var favicon = document.createElement("link")
+      favicon.setAttribute("rel","icon")
+      favicon.setAttribute("href","https://calendar.google.com/googlecalendar/images/favicon_v2013_"+(new Date().getDate())+".ico")
+      favicon.setAttribute("type","image/x-icon")
+      document.head.appendChild(favicon)
+  </script>
 </head>
 <body>
 
