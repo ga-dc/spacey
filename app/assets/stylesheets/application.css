@@ -106,6 +106,10 @@ form {
   display: inline-block;
 }
 
+.home-icon {
+  width: 100px;
+}
+
 .button {
   margin: 5px 0;
   font-size: 11px;
